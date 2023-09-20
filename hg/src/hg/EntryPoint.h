@@ -6,7 +6,12 @@ extern hg::Application* hg::CreateApplication(); //CreateApplication在客户端
 
 int main(int argc, char** argv)
 {
-	printf("hg Engine\n");
+	hg::Log::Init();
+	HG_CORE_WARN("Initialized Log!");
+	int a = 5;
+	HG_INFO("hello! Var={0}",a);
+
+
 	auto app = hg::CreateApplication();
 	app->run();
 	delete app;

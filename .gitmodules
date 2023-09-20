@@ -1,0 +1,6 @@
+[submodule "hg/vendor/spdlog"]
+	path = hg/vendor/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "hg/vendor/GLFW"]
+	path = hg/vendor/GLFW
+	url = https://github.com/TheCherno/glfw

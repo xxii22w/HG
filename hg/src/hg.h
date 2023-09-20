@@ -3,9 +3,10 @@
 // 这是为了hg使用的
 #include <stdio.h>
 #include "hg/Application.h"
-
+#include "hg/Log.h"
 // -----------入口点--------------
 
 #include "hg/EntryPoint.h"
 
 //-------------------------------
+  
