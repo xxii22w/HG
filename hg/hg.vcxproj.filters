@@ -4,9 +4,6 @@
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\OpenGL">
-      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Platform\windows">
       <UniqueIdentifier>{84931FBA-708C-3E0C-99BE-239185161E18}</UniqueIdentifier>
     </Filter>
@@ -21,9 +18,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="src\Platform\windows\WindowsInput.h">
       <Filter>Platform\windows</Filter>
     </ClInclude>
@@ -79,9 +73,6 @@
     <ClInclude Include="src\hgpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="src\Platform\windows\WindowsInput.cpp">
       <Filter>Platform\windows</Filter>
     </ClCompile>
@@ -99,6 +90,9 @@
     </ClCompile>
     <ClCompile Include="src\hg\Log.cpp">
       <Filter>hg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\imGui\ImGuiBuild.cpp">
+      <Filter>hg\imGui</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\imGui\ImGuiLayer.cpp">
       <Filter>hg\imGui</Filter>

@@ -10,3 +10,6 @@
 [submodule "hg/vendor/glm"]
 	path = hg/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "hg/hg/vendor/imgui"]
+	path = hg/hg/vendor/imgui
+	url = https://github.com/TheCherno/imgui

@@ -149,7 +149,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\windows\WindowsWindow.h" />
     <ClInclude Include="src\hg.h" />
@@ -171,13 +170,13 @@
     <ClInclude Include="src\hgpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
     <ClCompile Include="src\Platform\windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\windows\WindowsWindow.cpp" />
     <ClCompile Include="src\hg\Application.cpp" />
     <ClCompile Include="src\hg\Layer.cpp" />
     <ClCompile Include="src\hg\LayerStack.cpp" />
     <ClCompile Include="src\hg\Log.cpp" />
+    <ClCompile Include="src\hg\imGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\hg\imGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\hgpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

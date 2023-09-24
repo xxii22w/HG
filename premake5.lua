@@ -1,7 +1,9 @@
+-- 工作空间名称
 workspace "hg"
+	-- 架构
 	architecture "x64"
 	startproject "Sandbox"
-
+	-- 配置
 	configurations
 	{
 		"Debug",
@@ -19,7 +21,6 @@ IncludeDir["GLFW"] = "hg/vendor/GLFW/include"
 IncludeDir["Glad"] = "hg/vendor/Glad/include"
 IncludeDir["Imgui"] = "hg/vendor/imgui"
 IncludeDir["glm"] = "hg/vendor/glm"
-
 
 
 include "hg/vendor/GLFW"
@@ -47,7 +48,6 @@ project "hg"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/src/vendor/glm/glm/**.hpp",
 		"%{prj.name}/src/vendor/glm/glm/**.inl"
-
 	}
 
 	-- 包含路径
@@ -74,6 +74,7 @@ project "hg"
 		"Dwmapi.lib"
 	}
 
+	-- 过滤器 windows
 	filter "system:windows"
 		cppdialect "C++17"
 		-- WinSDK版本 这个需要本地化设置 这里保持最新版本
@@ -86,7 +87,7 @@ project "hg"
 			"_WINDLL",
 			"GLFW_INCLUDE_NONE" -- 那将不会包含任何glfw，他将不报行任何opengl头文件
 		}
-
+		-- 构建后置操作指令集
 		postbuildcommands
 		{
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/".. outputdir .."/SandBox")
@@ -133,6 +134,7 @@ project "SandBox"
 	{
 		"hg/vendor/spdlog/include",
 		"hg/src",
+		"hg/vendor",
 		"%{IncludeDir.glm}"
 	}
 
