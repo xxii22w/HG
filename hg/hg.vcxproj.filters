@@ -4,16 +4,31 @@
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\windows">
+      <UniqueIdentifier>{84931FBA-708C-3E0C-99BE-239185161E18}</UniqueIdentifier>
+    </Filter>
     <Filter Include="hg">
       <UniqueIdentifier>{14785900-0004-880B-69B2-880B555D880B}</UniqueIdentifier>
     </Filter>
     <Filter Include="hg\Events">
       <UniqueIdentifier>{78C59C1E-E42F-5195-2D6E-023B99172FEA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hg\imGui">
+      <UniqueIdentifier>{5EBC6BE4-4A89-C6EF-73A2-B4975FCEFB7D}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Platform\WindowsWindow.h">
-      <Filter>Platform</Filter>
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\windows\WindowsInput.h">
+      <Filter>Platform\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\windows\WindowsWindow.h">
+      <Filter>Platform\windows</Filter>
     </ClInclude>
     <ClInclude Include="src\hg.h" />
     <ClInclude Include="src\hg\Application.h">
@@ -37,23 +52,56 @@
     <ClInclude Include="src\hg\Events\MouseEvent.h">
       <Filter>hg\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\Input.h">
+      <Filter>hg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\KeyCode.h">
+      <Filter>hg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Layer.h">
+      <Filter>hg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\LayerStack.h">
+      <Filter>hg</Filter>
+    </ClInclude>
     <ClInclude Include="src\hg\Log.h">
+      <Filter>hg</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\MouseButtonCodes.h">
       <Filter>hg</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Window.h">
       <Filter>hg</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\imGui\ImGuiLayer.h">
+      <Filter>hg\imGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\hgpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Platform\WindowsWindow.cpp">
-      <Filter>Platform</Filter>
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\windows\WindowsInput.cpp">
+      <Filter>Platform\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\windows\WindowsWindow.cpp">
+      <Filter>Platform\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Application.cpp">
       <Filter>hg</Filter>
     </ClCompile>
+    <ClCompile Include="src\hg\Layer.cpp">
+      <Filter>hg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\LayerStack.cpp">
+      <Filter>hg</Filter>
+    </ClCompile>
     <ClCompile Include="src\hg\Log.cpp">
       <Filter>hg</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\imGui\ImGuiLayer.cpp">
+      <Filter>hg\imGui</Filter>
     </ClCompile>
     <ClCompile Include="src\hgpch.cpp" />
   </ItemGroup>

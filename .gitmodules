@@ -4,3 +4,9 @@
 [submodule "hg/vendor/GLFW"]
 	path = hg/vendor/GLFW
 	url = https://github.com/TheCherno/glfw
+[submodule "hg/vendor/imgui"]
+	path = hg/vendor/imgui
+	url = https://github.com/TheCherno/imgui
+[submodule "hg/vendor/glm"]
+	path = hg/vendor/glm
+	url = https://github.com/g-truc/glm

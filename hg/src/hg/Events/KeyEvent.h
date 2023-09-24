@@ -54,4 +54,26 @@ namespace hg {
 		}
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+	class HG_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int keycode)
+			:KeyEvent(keycode){}
+
+		// 重复按压次数
+		inline int GetRepeatCount()const { return m_RepeatCount; }
+
+		std::string ToString()const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
+	private:
+		int m_RepeatCount;
+	};
+
+
 }

@@ -3,6 +3,8 @@
 #include "hg/Events/KeyEvent.h"
 #include "hg/Events/MouseEvent.h"
 #include "hg/Events/ApplicationEvent.h"
+#include <glad/glad.h>
+
 
 
 namespace hg {
@@ -12,7 +14,7 @@ namespace hg {
 	// GLFW错误回调
 	static void GLFWErrorCallback(int error, const char* description)
 	{
-		HG_CORE_ERROR("GLFW Error ({0})L{1}", error, description);
+		HG_CORE_ERROR("GLFW Error ({0}):{1}", error, description);
 	}
 	// 窗口创建
 	Window* Window::Create(const WindowProps& props)
@@ -49,6 +51,8 @@ namespace hg {
 		// 创建窗口、设置上下文
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_Window);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		HG_CORE_ASSERT(status,"Failed to initialize Glad!");
 		// 将自定义的指针数据关联到指定窗口上。window：要设置关联指针的窗口对象。pointer：自定义的指针数据，可以是任何类型的指针。
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		// 开启垂直同步
@@ -98,6 +102,14 @@ namespace hg {
 				}
 				}
 			});
+
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode)
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window); 
+				KeyTypedEvent event(keycode);
+				data.EventCallback(event);
+			});
+
 
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
 			{

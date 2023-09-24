@@ -9,6 +9,11 @@
 	#error hg only support windows!
 #endif // !HG_PLATFORM_WINDOWS
 
+#ifdef HG_DEBUG
+	#define HG_ENABLE_ASSERTS
+#endif // HG_DEBUG
+
+
 #ifdef HG_ENABLE_ASSERTS
 	#define HG_ASSERT(x, ...){if(!(x)){HG_ERROR("Assertion Failed:{0}",__VA_ARGS__);__debugbreak();}}
 	#define HG_CORE_ASSERT(x, ...){if(!(x)){HG_CORE_ERROR("Assertion Failed:{0}",__VA_ARGS__);__debugbreak();}}
@@ -18,3 +23,5 @@
 #endif
 
 #define BIT(x) (1 << x)
+
+#define HG_BIND_EVENT_FN(fn) std::bind(&fn,this,std::placeholders::_1)

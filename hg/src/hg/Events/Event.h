@@ -16,7 +16,7 @@ namespace hg {
 		// ...
 		AppTick, AppUpdate, AppRender,
 		// 键盘事件
-		KeyPressed, KeyReleased,
+		KeyPressed, KeyReleased,KeyTyped,
 		// 鼠标事件
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
@@ -53,7 +53,6 @@ namespace hg {
 		{
 			return GetCategoryFlags() & category;
 		}
-	protected:
 		bool m_Handled = false;
 	};
 
