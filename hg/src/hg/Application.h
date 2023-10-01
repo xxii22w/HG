@@ -5,12 +5,15 @@
 #include "Window.h"
 #include "hg/Events/ApplicationEvent.h"
 #include "hg/LayerStack.h"
+#include "hg/Renderer/Shader.h"
+#include "hg/Renderer/VertexArray.h"
 
 #include "hg/imGui/ImGuiLayer.h"
+#include "hg/Renderer/Buffer.h"
 
 
 namespace hg {
-	class HG_API Application
+	class  Application
 	{
 	public:
 		Application();
@@ -31,6 +34,14 @@ namespace hg {
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+
+		std::shared_ptr<Shader> m_Shader;
+		std::shared_ptr<VertexArray> m_VertexArray;
+
+		std::shared_ptr<Shader> m_BlueShader;
+		std::shared_ptr<VertexArray> m_SquareVA;
+
+
 	private:
 		static Application* s_Instance;
 	};

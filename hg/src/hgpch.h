@@ -1,11 +1,13 @@
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <memory>
 #include <utility>
 #include <algorithm>
 #include <functional>
 #include <sstream>
+#include <cstdint>
 
 #include <string>
 #include <vector>

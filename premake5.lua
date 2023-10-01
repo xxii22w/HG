@@ -32,9 +32,10 @@ project "hg"
 	-- 位置
 	location "hg"
 	-- 项目类型
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
+	staticruntime "on"
+	cppdialect "C++17"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -48,6 +49,11 @@ project "hg"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/src/vendor/glm/glm/**.hpp",
 		"%{prj.name}/src/vendor/glm/glm/**.inl"
+	}
+
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	-- 包含路径
@@ -76,7 +82,7 @@ project "hg"
 
 	-- 过滤器 windows
 	filter "system:windows"
-		cppdialect "C++17"
+
 		-- WinSDK版本 这个需要本地化设置 这里保持最新版本
 		systemversion "latest"
 
@@ -85,13 +91,10 @@ project "hg"
 			"HG_PLATFORM_WINDOWS",
 			"HG_BUILD_DLL",
 			"_WINDLL",
-			"GLFW_INCLUDE_NONE" -- 那将不会包含任何glfw，他将不报行任何opengl头文件
+			"GLFW_INCLUDE_NONE", -- 那将不会包含任何glfw，他将不报行任何opengl头文件
+			
 		}
-		-- 构建后置操作指令集
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/".. outputdir .."/SandBox")
-		}
+
 
 	-- 过滤器 Debug配置 仅适用于Debug
 	filter "configurations:Debug"
@@ -118,7 +121,7 @@ project "SandBox"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "off"
+	staticruntime "on"
 
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -144,7 +147,6 @@ project "SandBox"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		systemversion "latest"
 
 		defines
@@ -156,14 +158,14 @@ project "SandBox"
 		filter "configurations:Debug"
 			defines "HG_DEBUG"
 			runtime "Debug"
-			symbols "On"
+			symbols "on"
 
 		filter "configurations:Release"
 			defines "HG_RELEASE"
 			runtime "Release"
-			optimize "On"
+			optimize "on"
 
 		filter "configurations:Dist"
 			defines "HG_DIST"
 			runtime "Release"
-			optimize "On"
+			optimize "on"

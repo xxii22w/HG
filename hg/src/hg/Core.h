@@ -1,12 +1,17 @@
 #pragma once
+
 #ifdef HG_PLATFORM_WINDOWS
+#if HG_DYNAMIC_LINK
 	#ifdef HG_BUILD_DLL
 		#define HG_API __declspec(dllexport)
 	#else
 		#define HG_API __declspec(dllimport)
 	#endif
 #else
-	#error hg only support windows!
+	#define HG_API
+#endif
+#else
+#error HG only supports Windows!
 #endif // !HG_PLATFORM_WINDOWS
 
 #ifdef HG_DEBUG

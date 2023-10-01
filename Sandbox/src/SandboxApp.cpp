@@ -18,12 +18,13 @@ public:
 			HG_TRACE("Tab key is Pressed (poll) !");
 	}
 
-	/*virtual void OnImGuiRender() override
+	virtual void OnImGuiRender() override
 	{
 		ImGui::Begin("Text");
 		ImGui::Text("Hello world");
+		ImGui::ColorEdit4("", new float[4]);
 		ImGui::End();
-	}*/
+	}
 
 	void OnEvent(hg::Event& event)override
 	{

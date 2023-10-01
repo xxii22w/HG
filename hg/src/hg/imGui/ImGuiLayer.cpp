@@ -82,6 +82,7 @@ namespace hg {
 	{
 		static bool show = true;
 		ImGui::ShowDemoWindow(&show);
+
 	}
 
 }

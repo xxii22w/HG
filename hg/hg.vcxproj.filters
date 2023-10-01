@@ -71,6 +71,14 @@
       <Filter>hg\imGui</Filter>
     </ClInclude>
     <ClInclude Include="src\hgpch.h" />
+    <ClInclude Include="src\hg\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\hg\Renderer\Shader.h" />
+    <ClInclude Include="src\hg\Renderer\Buffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\hg\Renderer\Renderer.h" />
+    <ClInclude Include="src\hg\Renderer\VertexArray.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\windows\WindowsInput.cpp">
@@ -98,5 +106,12 @@
       <Filter>hg\imGui</Filter>
     </ClCompile>
     <ClCompile Include="src\hgpch.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\hg\Renderer\Shader.cpp" />
+    <ClCompile Include="src\hg\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\hg\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\hg\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
   </ItemGroup>
 </Project>

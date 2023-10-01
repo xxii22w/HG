@@ -3,6 +3,7 @@
 #include "hg/Window.h"
 
 #include <GLFW/glfw3.h>
+#include "hg/Renderer/GraphicsContext.h"
 
 namespace hg {
 
@@ -29,6 +30,7 @@ namespace hg {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		struct WindowData
 		{
