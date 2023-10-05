@@ -1,138 +1,66 @@
 #include "hgpch.h"
-#include "Shader.h"
+#include "hg/Renderer/Shader.h"
 
-#include <glad/glad.h>
+#include "hg/Renderer/Renderer.h"
+#include "Platform/OpenGL/OpenGLShader.h"
 
-hg::Shader::Shader(const std::string& vertexSrc, const std::string& faagmentSrc)
-{
+namespace hg {
 
-	// 创建着色器
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-
-	// 发送顶点数据到GL
-	// Note that std::string's .c_str is NULL character terminated.
-	const GLchar* source = vertexSrc.c_str();
-	glShaderSource(vertexShader, 1, &source, 0);
-
-	// 编译顶点数据
-	glCompileShader(vertexShader);
-
-	// 检查编译是否成功
-	GLint isCompiled = 0;
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
-	if (isCompiled == GL_FALSE)
+	Ref<Shader> Shader::Create(const std::string& filepath)
 	{
-		// 返回错误信息
-		GLint maxLength = 0;
-		glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None: HG_CORE_ASSERT(false, "RendererAPI::None is currently not support!");
+		case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(filepath);
+		}
 
-		// GL自己的日志
-		std::vector<GLchar> infoLog(maxLength);
-		glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
+		HG_CORE_ASSERT(false, "Unknown RendererAPI!");
+	}
+	Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+	{
+		switch (Renderer::GetAPI())
+		{
+			case RendererAPI::API::None: HG_CORE_ASSERT(false, "RendererAPI::None is currently not support!");
+			case RendererAPI::API::OpenGL: return std::make_shared<OpenGLShader>(name,vertexSrc, fragmentSrc);
+		}
 
-		// 出错了我们就不需要它了
-		glDeleteShader(vertexShader);
-
-		// Use the infoLog as you see fit.
-
-		// In this simple program, we'll just leave
-		HG_CORE_ERROR("{0}", infoLog.data());
-		HG_CORE_ASSERT(false, "Vertex shader compilation failure!");
-
-		return;
+		HG_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
 	}
 
-	// Create an empty fragment shader handle
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-	// 将片段着色器发送到GL
-	// Note that std::string's .c_str is NULL character terminated.
-	source = faagmentSrc.c_str();
-	glShaderSource(fragmentShader, 1, &source, 0);
-
-	// 编译片段着色器
-	glCompileShader(fragmentShader);
-
-	// 检查着色器是否出错
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
-	if (isCompiled == GL_FALSE)
+	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
 	{
-		GLint maxLength = 0;
-		glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-		// The maxLength includes the NULL character
-		std::vector<GLchar> infoLog(maxLength);
-		glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &infoLog[0]);
-
-		// We don't need the shader anymore.
-		glDeleteShader(fragmentShader);
-		// Either of them. Don't leak shaders.
-		glDeleteShader(vertexShader);
-
-		// Use the infoLog as you see fit.
-
-		// In this simple program, we'll just leave
-
-		HG_CORE_ERROR("{0}", infoLog.data());
-		HG_CORE_ASSERT(false,"fragment shader compilation failure!")
-		return;
+		HG_CORE_ASSERT(!Exists(name), "Shader already exists!");
+		m_Shaders[name] = shader;
 	}
 
-	//	顶点着色器和片段着色器都有效，我们可以生成程序了
-	// Now time to link them together into a program.
-	// Get a program object.
-	m_RendererID = glCreateProgram();
-	GLint program = m_RendererID;
-
-	//	将着色器附加进程序
-	glAttachShader(program, vertexShader);
-	glAttachShader(program, fragmentShader);
-
-	// 链接到程序
-	glLinkProgram(program);
-
-	// 检查程序是否成功
-	// Note the different functions here: glGetProgram* instead of glGetShader*.
-	GLint isLinked = 0;
-	glGetProgramiv(program, GL_LINK_STATUS, (int*)&isLinked);
-	if (isLinked == GL_FALSE)
+	void ShaderLibrary::Add(const Ref<Shader>& shader)
 	{
-		GLint maxLength = 0;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
-
-		// The maxLength includes the NULL character
-		std::vector<GLchar> infoLog(maxLength);
-		glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
-
-		// We don't need the program anymore.
-		glDeleteProgram(program);
-		// Don't leak shaders either.
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
-
-		// Use the infoLog as you see fit.
-
-		// In this simple program, we'll just leave
-		return;
+		auto& name = shader->GetName();
+		Add(name, shader);
 	}
 
-	// 分离已经成功链接到的着色器
-	// Always detach shaders after a successful link.
-	glDetachShader(program, vertexShader);
-	glDetachShader(program, fragmentShader);
-}
+	Ref<Shader> ShaderLibrary::Load(const std::string& filepath)
+	{
+		auto shader = Shader::Create(filepath);
+		Add(shader);
+		return shader;
+	}
 
-hg::Shader::~Shader()
-{
-	glDeleteProgram(m_RendererID);
-}
+	Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& filepath)
+	{
+		auto shader = Shader::Create(filepath);
+		Add(name,shader);
+		return shader;
+	}
 
-void hg::Shader::bind()
-{
-	glUseProgram(m_RendererID);
-}
-
-void hg::Shader::unbind()
-{
-	glUseProgram(0);
+	Ref<Shader> ShaderLibrary::Get(const std::string name)
+	{
+		HG_CORE_ASSERT(Exists(name), "Shader not found!");
+		return m_Shaders[name];
+	}
+	bool ShaderLibrary::Exists(const std::string& name) const
+	{
+		return m_Shaders.find(name) != m_Shaders.end();
+	}
 }
