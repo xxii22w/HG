@@ -3,13 +3,13 @@
 // 这是为了hg使用的
 
 
-#include "hg/Application.h"
-#include "hg/Layer.h"
-#include "hg/Log.h"
+#include "hg/Core/Application.h"
+#include "hg/Core/Layer.h"
+#include "hg/Core/Log.h"
 
-#include "hg/Input.h"
-#include "hg/MouseButtonCodes.h"
-#include "hg/KeyCode.h"
+#include "hg/Core/Input.h"
+#include "hg/Core/MouseButtonCodes.h"
+#include "hg/Core/KeyCode.h"
 
 #include "hg/Core/Timestep.h"
 
@@ -17,6 +17,7 @@
 
 // -----------Renderer--------------
 #include "hg/Renderer/Renderer.h"
+#include "hg/Renderer/Renderer2D.h"
 #include "hg/Renderer/RenderCommand.h"
 
 #include "hg/Renderer/Buffer.h"
@@ -25,10 +26,7 @@
 #include "hg/Renderer/VertexArray.h"
 
 #include "hg/Renderer/OrthographicCamera.h"
-
-// -----------Entry Point--------------
-
-#include "hg/EntryPoint.h"
+#include "hg/Renderer/OrthographicCameraController.h"
 
 //-------------------------------
   

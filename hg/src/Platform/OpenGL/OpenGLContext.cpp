@@ -14,6 +14,8 @@ namespace hg {
 	}
 	void OpenGLContext::Init()
 	{
+		HG_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		HG_CORE_ASSERT(status, "Failed to initialize Glad!");
@@ -28,6 +30,8 @@ namespace hg {
 	}
 	void OpenGLContext::SwapBuffers()
 	{
+		HG_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	} 
 }

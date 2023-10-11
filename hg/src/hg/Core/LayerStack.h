@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hg/Core.h"
+#include "hg/Core/Core.h"
 #include "Layer.h"
 
 #include <vector>

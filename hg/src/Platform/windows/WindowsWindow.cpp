@@ -9,8 +9,8 @@
 
 
 namespace hg {
-	// GLFW初始化
-	static bool s_GLFWInitialized = false;
+
+	static uint8_t s_GLFWWindowCount = 0;
 
 	// GLFW错误回调
 	static void GLFWErrorCallback(int error, const char* description)
@@ -25,34 +25,41 @@ namespace hg {
 
 	WindowsWindow::WindowsWindow(const WindowProps& props)
 	{
+		HG_PROFILE_FUNCTION();
 		Init(props);
 	}
 	// 关闭窗口
 	WindowsWindow::~WindowsWindow()
 	{
+		HG_PROFILE_FUNCTION();
+
 		Shutdown();
 	}
 	// 初始化窗口
 	void WindowsWindow::Init(const WindowProps& props)
 	{
-
+		HG_PROFILE_FUNCTION();
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 
-
-
 		HG_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-		if (s_GLFWInitialized == 0)
+		if (s_GLFWWindowCount == 0)
 		{
+			HG_PROFILE_SCOPE("glfwInit");
 			int success = glfwInit();
 			HG_CORE_ASSERT(success, "Could not initialize GLFW!");
 			glfwSetErrorCallback(GLFWErrorCallback);
-			s_GLFWInitialized = true;
+			s_GLFWWindowCount = true;
 		}
-		// 创建窗口、设置上下文
-		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+
+		{
+			HG_PROFILE_SCOPE("glfwCreateWindow");
+			// 创建窗口、设置上下文
+			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
+			++s_GLFWWindowCount;
+		}
 
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();
@@ -70,6 +77,7 @@ namespace hg {
 			data.Height = height;
 
 			WindowResizedEvent event(width, height);
+			HG_CORE_WARN("{0}, {1}", width, height);
 			data.EventCallback(event);
 
 		});
@@ -158,11 +166,21 @@ namespace hg {
 	
 	void WindowsWindow::Shutdown()
 	{
-		glfwDestroyWindow(m_Window);
+		HG_PROFILE_FUNCTION();
+
+		--s_GLFWWindowCount;
+
+		if (s_GLFWWindowCount == 0)
+		{
+			glfwTerminate();
+		}
+
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
+		HG_PROFILE_FUNCTION();
+
 		// 此函数仅处理事件队列中已有的那些事件，然后立即返回。处理事件将导致调用与这些事件关联的窗口和输入回调。
 		glfwPollEvents();
 		// 将前后缓存交换
@@ -171,6 +189,8 @@ namespace hg {
 	// 开启垂直同步
 	void WindowsWindow::SetVSync(bool enabled)
 	{
+		HG_PROFILE_FUNCTION();
+
 		if (enabled)
 			glfwSwapInterval(1);
 		else

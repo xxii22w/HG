@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_glfw.h"
-#include "hg/Application.h"
+#include "hg/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
@@ -21,6 +21,8 @@ namespace hg {
 
 	void ImGuiLayer::OnAttach()
 	{
+		HG_PROFILE_FUNCTION();
+
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -46,6 +48,8 @@ namespace hg {
 
 	void ImGuiLayer::OnDetach()
 	{
+		HG_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
@@ -53,6 +57,8 @@ namespace hg {
 
 	void ImGuiLayer::Begin()
 	{
+		HG_PROFILE_FUNCTION();
+
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -60,6 +66,8 @@ namespace hg {
 
 	void ImGuiLayer::End()
 	{
+		HG_PROFILE_FUNCTION();
+
 		// 设置显示尺寸
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
@@ -77,12 +85,6 @@ namespace hg {
 			glfwMakeContextCurrent(ctx);
 		}
 	}
-
-	void ImGuiLayer::OnImGuiRender()
-	{
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
-
-	}
+	 
 
 }

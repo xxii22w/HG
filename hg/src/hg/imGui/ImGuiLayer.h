@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hg/Layer.h"
+#include "hg/Core/Layer.h"
 #include "hg/Events/KeyEvent.h"
 #include "hg/Events/MouseEvent.h"
 #include "hg/Events/ApplicationEvent.h"
@@ -15,7 +15,6 @@ namespace hg {
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
-		virtual void OnImGuiRender() override;
 
 		void Begin();
 		void End();

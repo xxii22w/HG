@@ -1,17 +1,22 @@
 #include "hgpch.h"
-#include "RendererAPI.h"
+#include "hg/Renderer/RendererAPI.h"
+#include "Platform/OpenGL/OpenGLRendererAPI.h"
+
 
 namespace hg {
 
 	RendererAPI::API RendererAPI::s_API = RendererAPI::API::OpenGL;
 
-	void RendererAPI::SetClearColor(const glm::vec4& color)
+	Scope<RendererAPI> RendererAPI::Create()
 	{
+		switch (s_API)
+		{
+		case RendererAPI::API::None:    HG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+		case RendererAPI::API::OpenGL:  return CreateScope<OpenGLRendererAPI>();
+		}
+
+		HG_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
 	}
-	void RendererAPI::Clear()
-	{
-	}
-	void RendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
-	{
-	}
+
 }

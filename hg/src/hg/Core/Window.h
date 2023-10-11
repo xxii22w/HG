@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "hgpch.h"
-#include "hg/Core.h"
+#include "hg/Core/Core.h"
 #include "hg/Events/Event.h"
 
 

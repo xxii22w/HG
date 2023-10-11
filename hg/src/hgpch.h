@@ -15,7 +15,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "hg/Log.h"
+#include "hg/Core/Log.h"
+#include "hg/Debug/instrumentor.h"
 
 #ifdef HG_PLATFORM_WINDOWS
 	#include <Windows.h>

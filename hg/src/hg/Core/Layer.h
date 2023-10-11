@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hg/Core.h"
+#include "hg/Core/Core.h"
 #include "hg/Events/Event.h"
 #include "hg/Core/Timestep.h"
 
@@ -16,7 +16,7 @@ namespace hg {
 		virtual void OnDetach() {}
 		virtual void OnUpdate(Timestep ts) {}
 		virtual void OnImGuiRender(){}
-		virtual void OnEvent(Event& event){}
+		virtual void OnEvent(Event& e){}
 
 		inline const std::string& GetName()const { return m_DebugName; }
 	protected:

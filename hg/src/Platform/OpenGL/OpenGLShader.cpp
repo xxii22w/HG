@@ -22,6 +22,7 @@ namespace hg {
 
 	OpenGLShader::OpenGLShader(const std::string& filepath)
 	{
+		HG_PROFILE_FUNCTION();
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -36,6 +37,8 @@ namespace hg {
 	OpenGLShader::OpenGLShader(const std::string& name,const std::string& vertexSrc, const std::string& fragmentSrc)
 		:m_Name(name)
 	{
+		HG_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -44,11 +47,15 @@ namespace hg {
 
 	OpenGLShader::~OpenGLShader()
 	{
+		HG_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
+		HG_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream in(filepath, std::ios::in | std::ios::binary); // ifstream closes itself due to RAII
 		if (in)
@@ -76,6 +83,7 @@ namespace hg {
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		HG_PROFILE_FUNCTION();
 
 		std::unordered_map<GLenum, std::string> shaderSources;
 
@@ -105,6 +113,8 @@ namespace hg {
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSource)
 	{
+		HG_PROFILE_FUNCTION();
+
 		GLuint program = glCreateProgram();
 		HG_CORE_ASSERT(shaderSource.size() <= 2, "We only support 2 shaders for now!");
 		std::array<GLenum,2> glShaderIDs;
@@ -182,47 +192,98 @@ namespace hg {
 
 	void  OpenGLShader::bind() const
 	{
+		HG_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void  OpenGLShader::Unbind() const 
 	{
+		HG_PROFILE_FUNCTION();
+
 		glUseProgram(0);
+	}
+
+	void OpenGLShader::SetInt(const std::string& name, int value)
+	{
+		HG_PROFILE_FUNCTION();
+
+		UploadUniformInt(name, value);
+	}
+
+	void OpenGLShader::SetFloat(const std::string& name, float value)
+	{
+		HG_PROFILE_FUNCTION();
+
+		UploadUniformFloat(name, value);
+	}
+
+	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value)
+	{
+		HG_PROFILE_FUNCTION();
+
+		UploadUniformFloat3(name, value);
+	}
+
+	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value)
+	{
+		HG_PROFILE_FUNCTION();
+
+		UploadUniformFloat4(name, value);
+	}
+
+	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
+	{
+		HG_PROFILE_FUNCTION();
+
+		UploadUniformMat4(name, value);
 	}
 
 
 	void OpenGLShader::UploadUniformInt(const std::string& name, int value)
 	{
+		HG_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(location, value);
 	}
 
 	void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
 	{
+		HG_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1f(location, value);
 	}
 
 	void OpenGLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& values)
 	{
+		HG_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform2f(location, values.x,values.y);
 	}
 
 	void OpenGLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& values)
 	{
+		HG_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform3f(location, values.x, values.y,values.z);
 	}
 
 	void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& values)
 	{
+		HG_PROFILE_FUNCTION();
+
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform4f(location, values.x, values.y, values.z, values.w);
 	}
 
 	void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix)
 	{
+		HG_PROFILE_FUNCTION();
+
 		// 找到同一变量的位置
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		// 参数			   位置     矩阵数量  是否翻转成列向量   指向值的指针
@@ -232,6 +293,8 @@ namespace hg {
 
 	void  OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
 	{
+		HG_PROFILE_FUNCTION();
+
 		// 找到同一变量的位置
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		// 参数			   位置     矩阵数量  是否翻转成列向量   指向值的指针

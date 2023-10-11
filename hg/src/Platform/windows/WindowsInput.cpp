@@ -1,7 +1,7 @@
 #include "hgpch.h"
 #include "WindowsInput.h"
 
-#include "hg/Application.h"
+#include "hg/Core/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace hg {

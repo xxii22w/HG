@@ -6,17 +6,19 @@
 #include "hg/Renderer/Shader.h"
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Sandbox2D.h"
+
 class ExampleLayer :public hg::Layer
 {
 public:
 	ExampleLayer()
-		:Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f), m_SquarePosition(0.0f)
+		:Layer("Example"), m_CameraController(1280.0f / 720.0f)
 	{
 		// Vertex Array
 			// Vertex Buffer
 			// Index Buffer
 
-		m_VertexArray.reset(hg::VertexArray::Create());
+		m_VertexArray = hg::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			-0.5f,-0.5f,0.0f,0.8f,0.0f,1.0f,1.0f,
@@ -25,7 +27,7 @@ public:
 		};
 		std::shared_ptr<hg::VertexBuffer> vertexBuffer;
 
-		vertexBuffer.reset(hg::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = hg::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		hg::BufferLayout layout = {
 			{hg::ShaderDataType::Float3,"a_Position"},
@@ -37,11 +39,11 @@ public:
 
 		uint32_t indices[3] = { 0,1,2 };
 		std::shared_ptr<hg::IndexBuffer> indexBuffer;
-		indexBuffer.reset(hg::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = hg::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
 
-		m_SquareVA.reset(hg::VertexArray::Create());
+		m_SquareVA = hg::VertexArray::Create();
 		float squareVertices[5 * 4] = {
 			-0.5f,-0.5f,0.0f,0.0f,0.0f,
 			0.5f,-0.5f,0.0f,1.0f,0.0f,
@@ -50,7 +52,7 @@ public:
 		};
 
 		std::shared_ptr<hg::VertexBuffer> squareVB;
-		squareVB.reset(hg::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVB = hg::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		squareVB->SetLayout({
 			{ hg::ShaderDataType::Float3,"a_Position" },
 			{ hg::ShaderDataType::Float2,"a_TexCoord" }
@@ -59,7 +61,7 @@ public:
 
 		uint32_t squareIndices[6] = { 0,1,2,2,3,0 };
 		std::shared_ptr<hg::IndexBuffer> squareIB;
-		squareIB.reset(hg::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = hg::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIB);
 
 		std::string vertexSrc = R"(
@@ -147,31 +149,16 @@ public:
 	}
 
 	void OnUpdate(hg::Timestep ts)override
-	{
-
-		if (hg::Input::IsKeyPressed(HG_KEY_LEFT))
-			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-		else if (hg::Input::IsKeyPressed(HG_KEY_RIGHT))
-			m_CameraPosition.x += m_CameraMoveSpeed * ts;
-
-		if (hg::Input::IsKeyPressed(HG_KEY_DOWN))
-			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
-		else if (hg::Input::IsKeyPressed(HG_KEY_UP))
-			m_CameraPosition.y += m_CameraMoveSpeed * ts;
-
-		if (hg::Input::IsKeyPressed(HG_KEY_A))
-			m_CameraRotation += m_CameraRotationSpeed * ts;
-		else if (hg::Input::IsKeyPressed(HG_KEY_D))
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
-
+	{ 
 		
+		// Update
+		m_CameraController.OnUpdate(ts);
+
+		// Render
 		hg::RenderCommand::SetClearColor({ 0.1f,0.1f,0.1f,1 });
 		hg::RenderCommand::Clear();
 
-		m_Camera.SetPosition(m_CameraPosition);
-		m_Camera.SetRotation(m_CameraRotation);
-
-		hg::Renderer::BeginScane(m_Camera);
+		hg::Renderer::BeginScane(m_CameraController.GetCamera());
 
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -211,9 +198,19 @@ public:
 
 	}
 
-	void OnEvent(hg::Event& event)override
+	void OnEvent(hg::Event& e)override
 	{
+		m_CameraController.OnEvent(e);
 
+		if (e.GetEventType() == hg::EventType::WindowResize)
+		{
+			auto& re = (hg::WindowResizedEvent&)e;
+
+			float ar = (float)re.GetWidth() / (float)re.GetHeight();
+
+			float zoom = (float)re.GetWidth() / 1280.0f;
+			m_CameraController.SetZoomLevel(zoom);
+		}
 	} 
 
 private:
@@ -226,15 +223,7 @@ private:
 
 	hg::Ref<hg::Texture2D> m_Texture,m_logoTexture;
 
-	hg::OrthographicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-	float m_CameraMoveSpeed = 1.0f;
-
-	float m_CameraRotation = 0.0f;
-	float m_CameraRotationSpeed = 30.0f;
-
-	glm::vec3 m_SquarePosition;
-	float m_SquareMovepeed = 1.0f;
+	hg::OrthographicCameraController m_CameraController;
 
 	glm::vec3 m_SquareColor = { 0.2f,0.3f,0.8f };
 };
@@ -244,7 +233,8 @@ class Sandbox :public hg::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 
 	}
 	~Sandbox()

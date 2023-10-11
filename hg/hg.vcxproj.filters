@@ -63,17 +63,38 @@
     <ClInclude Include="src\hg.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Application.h">
-      <Filter>src\hg</Filter>
+    <ClInclude Include="src\hg\Core\Application.h">
+      <Filter>src\hg\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Core.h">
-      <Filter>src\hg</Filter>
+    <ClInclude Include="src\hg\Core\Core.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\EntryPoint.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\Input.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\KeyCode.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\Layer.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\LayerStack.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\Log.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\MouseButtonCodes.h">
+      <Filter>src\hg\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Core\Timestep.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\EntryPoint.h">
-      <Filter>src\hg</Filter>
+    <ClInclude Include="src\hg\Core\Window.h">
+      <Filter>src\hg\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Events\ApplicationEvent.h">
       <Filter>src\hg\Events</Filter>
@@ -87,24 +108,6 @@
     <ClInclude Include="src\hg\Events\MouseEvent.h">
       <Filter>src\hg\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Input.h">
-      <Filter>src\hg</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hg\KeyCode.h">
-      <Filter>src\hg</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hg\Layer.h">
-      <Filter>src\hg</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hg\LayerStack.h">
-      <Filter>src\hg</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hg\Log.h">
-      <Filter>src\hg</Filter>
-    </ClInclude>
-    <ClInclude Include="src\hg\MouseButtonCodes.h">
-      <Filter>src\hg</Filter>
-    </ClInclude>
     <ClInclude Include="src\hg\Renderer\Buffer.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
@@ -112,6 +115,9 @@
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Renderer\OrthographicCamera.h">
+      <Filter>src\hg\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Renderer\OrthographicCameraController.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Renderer\RenderCommand.h">
@@ -132,9 +138,6 @@
     <ClInclude Include="src\hg\Renderer\VertexArray.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Window.h">
-      <Filter>src\hg</Filter>
-    </ClInclude>
     <ClInclude Include="src\hg\imGui\ImGuiLayer.h">
       <Filter>src\hg\imGui</Filter>
     </ClInclude>
@@ -144,6 +147,8 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\Renderer\Renderer2D.h" />
+    <ClInclude Include="src\hg\Debug\instrumentor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -170,22 +175,25 @@
     <ClCompile Include="src\Platform\windows\WindowsWindow.cpp">
       <Filter>src\Platform\windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\hg\Application.cpp">
-      <Filter>src\hg</Filter>
+    <ClCompile Include="src\hg\Core\Application.cpp">
+      <Filter>src\hg\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\hg\Layer.cpp">
-      <Filter>src\hg</Filter>
+    <ClCompile Include="src\hg\Core\Layer.cpp">
+      <Filter>src\hg\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\hg\LayerStack.cpp">
-      <Filter>src\hg</Filter>
+    <ClCompile Include="src\hg\Core\LayerStack.cpp">
+      <Filter>src\hg\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\hg\Log.cpp">
-      <Filter>src\hg</Filter>
+    <ClCompile Include="src\hg\Core\Log.cpp">
+      <Filter>src\hg\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Renderer\Buffer.cpp">
       <Filter>src\hg\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Renderer\OrthographicCamera.cpp">
+      <Filter>src\hg\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\Renderer\OrthographicCameraController.cpp">
       <Filter>src\hg\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Renderer\RenderCommand.cpp">
@@ -218,5 +226,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\hg\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

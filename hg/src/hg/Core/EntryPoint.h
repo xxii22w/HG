@@ -7,14 +7,19 @@ extern hg::Application* hg::CreateApplication(); //CreateApplication在客户端
 int main(int argc, char** argv)
 {
 	hg::Log::Init();
-	HG_CORE_WARN("Initialized Log!");
-	int a = 5;
-	HG_INFO("hello! Var={0}",a);
 
-
+	HG_PROFILE_BEGIN_SESSION("Startup", "Hgprofile-Startup.json");
 	auto app = hg::CreateApplication();
+	HG_PROFILE_END_SESSION();
+
+	HG_PROFILE_BEGIN_SESSION("Runtime", "Hgprofile-runtime.json");
 	app->run();
+	HG_PROFILE_END_SESSION();
+
+	HG_PROFILE_BEGIN_SESSION("Shutdown", "Hgprofile-Shutdown.json");
 	delete app;
+	HG_PROFILE_END_SESSION();
+
 }
 
 

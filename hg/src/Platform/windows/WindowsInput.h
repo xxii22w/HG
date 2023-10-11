@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hg/Input.h"
+#include "hg/Core/Input.h"
 
 namespace hg {
 

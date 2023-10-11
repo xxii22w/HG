@@ -26,23 +26,25 @@ namespace hg {
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
+		HG_PROFILE_FUNCTION();
 		glCreateVertexArrays(1, &m_RendererID);
 	}
 	void OpenGLVertexArray::Bind() const
 	{
+		HG_PROFILE_FUNCTION();
 		glBindVertexArray(m_RendererID);
 	}
 	void OpenGLVertexArray::UnBind() const
 	{
+		HG_PROFILE_FUNCTION();
 		glBindVertexArray(0);
 	}
 	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 	{
+		HG_PROFILE_FUNCTION();
 		glBindVertexArray(m_RendererID);
 		HG_CORE_ASSERT(vertexBuffer->GetLayout().GetElement().size(), "Vertex Buffer has no layout!");
 		vertexBuffer->Bind();
-
-
 
 		uint32_t index = 0;
 		const auto& layout = vertexBuffer->GetLayout();
@@ -61,6 +63,7 @@ namespace hg {
 	}
 	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer)
 	{
+		HG_PROFILE_FUNCTION();
 		glBindVertexArray(m_RendererID);
 		indexBuffer->Bind();
 
