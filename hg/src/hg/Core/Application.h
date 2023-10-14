@@ -19,7 +19,7 @@ namespace hg {
 	class  Application
 	{
 	public:
-		Application();
+		Application(const std::string& name = "hg App");
 		virtual ~Application();
 		void run();
 		// 开启事务

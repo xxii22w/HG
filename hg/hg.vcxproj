@@ -140,9 +140,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\hg\Debug\instrumentor.h" />
-    <ClInclude Include="src\hg\Renderer\Framebuffer.h" />
-    <ClInclude Include="src\hg\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
@@ -164,16 +161,19 @@
     <ClInclude Include="src\hg\Core\MouseCodes.h" />
     <ClInclude Include="src\hg\Core\Timestep.h" />
     <ClInclude Include="src\hg\Core\Window.h" />
+    <ClInclude Include="src\hg\Debug\instrumentor.h" />
     <ClInclude Include="src\hg\Events\ApplicationEvent.h" />
     <ClInclude Include="src\hg\Events\Event.h" />
     <ClInclude Include="src\hg\Events\KeyEvent.h" />
     <ClInclude Include="src\hg\Events\MouseEvent.h" />
     <ClInclude Include="src\hg\Renderer\Buffer.h" />
+    <ClInclude Include="src\hg\Renderer\Framebuffer.h" />
     <ClInclude Include="src\hg\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\hg\Renderer\OrthographicCamera.h" />
     <ClInclude Include="src\hg\Renderer\OrthographicCameraController.h" />
     <ClInclude Include="src\hg\Renderer\RenderCommand.h" />
     <ClInclude Include="src\hg\Renderer\Renderer.h" />
+    <ClInclude Include="src\hg\Renderer\Renderer2D.h" />
     <ClInclude Include="src\hg\Renderer\RendererAPI.h" />
     <ClInclude Include="src\hg\Renderer\Shader.h" />
     <ClInclude Include="src\hg\Renderer\Texture.h" />
@@ -183,8 +183,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\hg\Renderer\Framebuffer.cpp" />
-    <ClCompile Include="src\hg\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
@@ -198,11 +196,14 @@
     <ClCompile Include="src\hg\Core\Layer.cpp" />
     <ClCompile Include="src\hg\Core\LayerStack.cpp" />
     <ClCompile Include="src\hg\Core\Log.cpp" />
+    <ClCompile Include="src\hg\Core\Window.cpp" />
     <ClCompile Include="src\hg\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\hg\Renderer\Framebuffer.cpp" />
     <ClCompile Include="src\hg\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="src\hg\Renderer\OrthographicCameraController.cpp" />
     <ClCompile Include="src\hg\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\hg\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\hg\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\hg\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\hg\Renderer\Shader.cpp" />
     <ClCompile Include="src\hg\Renderer\Texture.cpp" />

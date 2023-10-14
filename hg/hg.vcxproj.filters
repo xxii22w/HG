@@ -19,6 +19,9 @@
     <Filter Include="src\hg\Core">
       <UniqueIdentifier>{03C95E46-6F7E-D73B-F872-D1126427CE3F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg\Debug">
+      <UniqueIdentifier>{81444412-6DA7-D3B6-162D-0C6D026F9F39}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\hg\Events">
       <UniqueIdentifier>{4F27575E-BBE7-D294-8422-1C12F0A11771}</UniqueIdentifier>
     </Filter>
@@ -40,6 +43,9 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
@@ -96,6 +102,9 @@
     <ClInclude Include="src\hg\Core\Window.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\Debug\instrumentor.h">
+      <Filter>src\hg\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="src\hg\Events\ApplicationEvent.h">
       <Filter>src\hg\Events</Filter>
     </ClInclude>
@@ -111,6 +120,9 @@
     <ClInclude Include="src\hg\Renderer\Buffer.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\Renderer\Framebuffer.h">
+      <Filter>src\hg\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\hg\Renderer\GraphicsContext.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
@@ -124,6 +136,9 @@
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Renderer\Renderer.h">
+      <Filter>src\hg\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Renderer\Renderer2D.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Renderer\RendererAPI.h">
@@ -147,16 +162,15 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Renderer\Renderer2D.h" />
-    <ClInclude Include="src\hg\Debug\instrumentor.h" />
-    <ClInclude Include="src\hg\Renderer\Framebuffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
@@ -189,7 +203,13 @@
     <ClCompile Include="src\hg\Core\Log.cpp">
       <Filter>src\hg\Core</Filter>
     </ClCompile>
+    <ClCompile Include="src\hg\Core\Window.cpp">
+      <Filter>src\hg\Core</Filter>
+    </ClCompile>
     <ClCompile Include="src\hg\Renderer\Buffer.cpp">
+      <Filter>src\hg\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\Renderer\Framebuffer.cpp">
       <Filter>src\hg\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Renderer\OrthographicCamera.cpp">
@@ -202,6 +222,9 @@
       <Filter>src\hg\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Renderer\Renderer.cpp">
+      <Filter>src\hg\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\Renderer\Renderer2D.cpp">
       <Filter>src\hg\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Renderer\RendererAPI.cpp">
@@ -228,8 +251,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\hg\Renderer\Renderer2D.cpp" />
-    <ClCompile Include="src\hg\Renderer\Framebuffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
   </ItemGroup>
 </Project>

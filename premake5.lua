@@ -119,10 +119,8 @@ project "hg"
 		optimize "on"
 
 
-
-
-project "SandBox"
-	location "Sandbox"
+project "HG-Editor"
+	location "HG-Editor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -174,3 +172,58 @@ project "SandBox"
 			defines "HG_DIST"
 			runtime "Release"
 			optimize "on"
+
+
+			project "SandBox"
+			location "Sandbox"
+			kind "ConsoleApp"
+			language "C++"
+			cppdialect "C++17"
+			staticruntime "on"
+		
+		
+			targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+			objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+		
+			files
+			{
+				"%{prj.name}/src/**.h",
+				"%{prj.name}/src/**.cpp",
+			}
+		
+			includedirs
+			{
+				"hg/vendor/spdlog/include",
+				"hg/src",
+				"hg/vendor",
+				"%{IncludeDir.glm}"
+			}
+		
+			links
+			{
+				"hg"
+			}
+		
+			filter "system:windows"
+				systemversion "latest"
+		
+				defines
+				{
+					"HG_PLATFORM_WINDOWS",
+				}
+		
+		
+				filter "configurations:Debug"
+					defines "HG_DEBUG"
+					runtime "Debug"
+					symbols "on"
+		
+				filter "configurations:Release"
+					defines "HG_RELEASE"
+					runtime "Release"
+					optimize "on"
+		
+				filter "configurations:Dist"
+					defines "HG_DIST"
+					runtime "Release"
+					optimize "on"

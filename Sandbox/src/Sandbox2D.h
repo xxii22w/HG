@@ -20,7 +20,6 @@ private:
 	// Temp
 	hg::Ref<hg::Shader> m_FlatColorShader;
 	hg::Ref<hg::VertexArray> m_SquareVA;
-	hg::Ref<hg::Framebuffer> m_Framebuffer;
 
 	hg::Ref<hg::Texture2D> m_CheckboadTexture;
 
