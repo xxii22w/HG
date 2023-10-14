@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Event.h"
-#include <sstream>
+#include "hg/Events/Event.h"
+#include "hg/Core/MouseCodes.h"
 
 namespace hg {
 	// 鼠标移动事件
@@ -53,14 +53,23 @@ namespace hg {
 	// 鼠标按键事务
 	class HG_API MouseButtonEvent : public Event
 	{
-	public:
+	/*public:
 		inline int GetMouseButton()const { return m_Button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 	protected:
 		MouseButtonEvent(int button)
 			:m_Button(button){}
-		int m_Button;
+		int m_Button;*/
+	public:
+		MouseCode GetMouseButton() const { return m_Button; }
+
+		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput | EventCategoryMouseButton)
+	protected:
+		MouseButtonEvent(const MouseCode button)
+			: m_Button(button) {}
+
+		MouseCode m_Button;
 	};
 
 	// 按压鼠标事务

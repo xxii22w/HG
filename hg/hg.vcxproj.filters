@@ -87,7 +87,7 @@
     <ClInclude Include="src\hg\Core\Log.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Core\MouseButtonCodes.h">
+    <ClInclude Include="src\hg\Core\MouseCodes.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Core\Timestep.h">
@@ -149,6 +149,8 @@
     </ClInclude>
     <ClInclude Include="src\hg\Renderer\Renderer2D.h" />
     <ClInclude Include="src\hg\Debug\instrumentor.h" />
+    <ClInclude Include="src\hg\Renderer\Framebuffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -227,5 +229,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Renderer\Renderer2D.cpp" />
+    <ClCompile Include="src\hg\Renderer\Framebuffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />
   </ItemGroup>
 </Project>

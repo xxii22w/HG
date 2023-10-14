@@ -1,5 +1,9 @@
+#pragma once
+
 #include "hgpch.h"
 #include "Log.h"
+
+#include <vector>
 
 
 namespace hg {

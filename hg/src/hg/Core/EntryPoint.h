@@ -1,5 +1,6 @@
 #pragma once
 
+
 #ifdef HG_PLATFORM_WINDOWS
 
 extern hg::Application* hg::CreateApplication(); //CreateApplication在客户端实现的东西

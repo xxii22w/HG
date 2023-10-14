@@ -52,6 +52,11 @@ namespace hg {
 			overlay->OnAttach();
 		}
 
+		void Application::Close()
+		{
+			m_Running = false;
+		}
+
 
 		// 窗口开关
 		void Application::OnEvent(Event& e)

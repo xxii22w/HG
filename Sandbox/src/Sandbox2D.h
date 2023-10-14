@@ -20,8 +20,10 @@ private:
 	// Temp
 	hg::Ref<hg::Shader> m_FlatColorShader;
 	hg::Ref<hg::VertexArray> m_SquareVA;
+	hg::Ref<hg::Framebuffer> m_Framebuffer;
 
 	hg::Ref<hg::Texture2D> m_CheckboadTexture;
 
 	glm::vec4 m_SquareColor = { 0.2f,0.3f,0.8f,1.0f };
+
 };

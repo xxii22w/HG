@@ -2,13 +2,12 @@
 
 // 这是为了hg使用的
 
-
 #include "hg/Core/Application.h"
 #include "hg/Core/Layer.h"
 #include "hg/Core/Log.h"
 
 #include "hg/Core/Input.h"
-#include "hg/Core/MouseButtonCodes.h"
+#include "hg/Core/MouseCodes.h"
 #include "hg/Core/KeyCode.h"
 
 #include "hg/Core/Timestep.h"
@@ -22,6 +21,7 @@
 
 #include "hg/Renderer/Buffer.h"
 #include "hg/Renderer/Shader.h"
+#include "hg/Renderer/Framebuffer.h"
 #include "hg/Renderer/Texture.h"
 #include "hg/Renderer/VertexArray.h"
 
