@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "hg/Core/Base.h"
 #include "hg/Events/Event.h"
 #include "Window.h"
 #include "hg/Events/ApplicationEvent.h"
@@ -30,6 +30,7 @@ namespace hg {
 
 		void Close();
 
+		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 		inline static Application& Get() { return *s_Instance; }
 		inline Window& GetWindow() { return *m_Window; }
 	private:

@@ -6,7 +6,7 @@
 
 namespace hg
 {
-	class HG_API WindowResizedEvent :public Event
+	class  WindowResizedEvent :public Event
 	{
 	public:
 		WindowResizedEvent(unsigned int width, unsigned int height)
@@ -27,7 +27,7 @@ namespace hg
 		unsigned int m_Width, m_Height;
 	};
 
-	class HG_API WindowCloseEvent : public Event
+	class  WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() {}
@@ -36,7 +36,7 @@ namespace hg
 	};
 
 	
-	class HG_API AppTickEvent : public Event
+	class  AppTickEvent : public Event
 	{
 	public:
 		AppTickEvent() {}

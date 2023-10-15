@@ -28,6 +28,9 @@
     <Filter Include="src\hg\Renderer">
       <UniqueIdentifier>{D145B947-3DD1-260C-46E2-A900B2EC820C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg\Scene">
+      <UniqueIdentifier>{28A75213-140A-E2B7-BD8F-1A6EA9D1AD3A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\hg\imGui">
       <UniqueIdentifier>{55BFE514-4122-75B9-EAA7-AD6FD6E9403C}</UniqueIdentifier>
     </Filter>
@@ -60,9 +63,6 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\windows\WindowsInput.h">
-      <Filter>src\Platform\windows</Filter>
-    </ClInclude>
     <ClInclude Include="src\Platform\windows\WindowsWindow.h">
       <Filter>src\Platform\windows</Filter>
     </ClInclude>
@@ -72,7 +72,10 @@
     <ClInclude Include="src\hg\Core\Application.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Core\Core.h">
+    <ClInclude Include="src\hg\Core\Assert.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\Base.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Core\EntryPoint.h">
@@ -94,6 +97,9 @@
       <Filter>src\hg\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Core\MouseCodes.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Core\PlatformDetection.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\Core\Timestep.h">
@@ -152,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="src\hg\Renderer\VertexArray.h">
       <Filter>src\hg\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Scene\Scene.h">
+      <Filter>src\hg\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\imGui\ImGuiLayer.h">
       <Filter>src\hg\imGui</Filter>
@@ -238,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="src\hg\Renderer\VertexArray.cpp">
       <Filter>src\hg\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\Scene\Scene.cpp">
+      <Filter>src\hg\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\imGui\ImGuiBuild.cpp">
       <Filter>src\hg\imGui</Filter>

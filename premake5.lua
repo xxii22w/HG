@@ -2,7 +2,7 @@
 workspace "hg"
 	-- 架构
 	architecture "x64"
-	startproject "Sandbox"
+	startproject "HGnut"
 	-- 配置
 	configurations
 	{
@@ -22,6 +22,7 @@ IncludeDir["Glad"] = "hg/vendor/Glad/include"
 IncludeDir["Imgui"] = "hg/vendor/imgui"
 IncludeDir["glm"] = "hg/vendor/glm"
 IncludeDir["stb_image"] = "hg/vendor/stb_image"
+IncludeDir["entt"] = "hg/vendor/entt/include"
 
 
 
@@ -37,7 +38,7 @@ project "hg"
 	kind "StaticLib"
 	language "C++"
 	staticruntime "on"
-	cppdialect "C++17"
+	cppdialect "C++20"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -71,7 +72,8 @@ project "hg"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.Imgui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 
 
 	}
@@ -119,11 +121,11 @@ project "hg"
 		optimize "on"
 
 
-project "HG-Editor"
-	location "HG-Editor"
+project "HGnut"
+	location "HGnut"
 	kind "ConsoleApp"
 	language "C++"
-	cppdialect "C++17"
+	cppdialect "C++20"
 	staticruntime "on"
 
 
@@ -141,7 +143,9 @@ project "HG-Editor"
 		"hg/vendor/spdlog/include",
 		"hg/src",
 		"hg/vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
+
 	}
 
 	links
@@ -174,56 +178,56 @@ project "HG-Editor"
 			optimize "on"
 
 
-			project "SandBox"
-			location "Sandbox"
-			kind "ConsoleApp"
-			language "C++"
-			cppdialect "C++17"
-			staticruntime "on"
+project "SandBox"
+		location "Sandbox"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++20"
+		staticruntime "on"
 		
 		
-			targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-			objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 		
-			files
+		files
+		{
+			"%{prj.name}/src/**.h",
+			"%{prj.name}/src/**.cpp",
+		}
+		
+		includedirs
+		{
+			"hg/vendor/spdlog/include",
+			"hg/src",
+			"hg/vendor",
+			"%{IncludeDir.glm}"
+		}
+		
+		links
+		{
+			"hg"
+		}
+		
+		filter "system:windows"
+			systemversion "latest"
+		
+			defines
 			{
-				"%{prj.name}/src/**.h",
-				"%{prj.name}/src/**.cpp",
+				"HG_PLATFORM_WINDOWS",
 			}
 		
-			includedirs
-			{
-				"hg/vendor/spdlog/include",
-				"hg/src",
-				"hg/vendor",
-				"%{IncludeDir.glm}"
-			}
 		
-			links
-			{
-				"hg"
-			}
+			filter "configurations:Debug"
+				defines "HG_DEBUG"
+				runtime "Debug"
+				symbols "on"
 		
-			filter "system:windows"
-				systemversion "latest"
+			filter "configurations:Release"
+				defines "HG_RELEASE"
+				runtime "Release"
+				optimize "on"
 		
-				defines
-				{
-					"HG_PLATFORM_WINDOWS",
-				}
-		
-		
-				filter "configurations:Debug"
-					defines "HG_DEBUG"
-					runtime "Debug"
-					symbols "on"
-		
-				filter "configurations:Release"
-					defines "HG_RELEASE"
-					runtime "Release"
-					optimize "on"
-		
-				filter "configurations:Dist"
-					defines "HG_DIST"
-					runtime "Release"
-					optimize "on"
+			filter "configurations:Dist"
+				defines "HG_DIST"
+				runtime "Release"
+				optimize "on"

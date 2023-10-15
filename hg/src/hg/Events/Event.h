@@ -1,6 +1,7 @@
 #pragma once
 
-#include "hg/Core/Core.h"
+#include "hg/Core/Base.h"
+
 
 #include <string>
 #include <functional>
@@ -39,7 +40,7 @@ namespace hg {
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags()const override {return category;}
 
 	// 事件类
-	class HG_API Event
+	class  Event
 	{
 		friend class EventDispatcher;
 	public:
@@ -53,6 +54,8 @@ namespace hg {
 		{
 			return GetCategoryFlags() & category;
 		}
+
+		virtual ~Event() = default;
 		bool m_Handled = false;
 	};
 

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "hg/Core/Core.h"
+#include "hg/Core/Base.h"
+
+
 #include <string>
 
 namespace hg {

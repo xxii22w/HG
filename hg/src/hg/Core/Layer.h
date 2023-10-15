@@ -1,12 +1,13 @@
 #pragma once
 
-#include "hg/Core/Core.h"
+#include "hg/Core/Base.h"
+
 #include "hg/Events/Event.h"
 #include "hg/Core/Timestep.h"
 
 namespace hg {
 
-	class HG_API Layer
+	class  Layer
 	{
 	public:
 		Layer(const std::string& name = "Layer");

@@ -66,14 +66,14 @@ namespace hg {
 			// 应用调度
 			EventDispatcher dispatcher(e);
 			dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-			//dispatcher.Dispatch<WindowResizedEvent>(BIND_EVENT_FN(OnWindowResize));
+			dispatcher.Dispatch<WindowResizedEvent>(BIND_EVENT_FN(OnWindowResize));
 
 
-			for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+			for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend();++it)
 			{
-				(*--it)->OnEvent(e);
 				if (e.m_Handled)
 					break;
+				(*it)->OnEvent(e);
 			}
 		}
 

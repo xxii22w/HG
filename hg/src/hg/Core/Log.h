@@ -1,13 +1,14 @@
 #pragma once
 
 #include <memory>
-#include "Core.h"
+#include "hg/Core/Base.h"
+
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/fmt/ostr.h"
 
 namespace hg {
-	class HG_API Log
+	class  Log
 	{
 	public:
 		static void Init();

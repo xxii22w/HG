@@ -1,7 +1,8 @@
 #pragma once 
 
 #include "hgpch.h"
-#include "hg/Core/Core.h"
+#include "hg/Core/Base.h"
+
 #include "hg/Events/Event.h"
 
 
@@ -19,7 +20,7 @@ namespace hg {
 	};
 
 	// 基于window系统的窗口界面
-	class HG_API Window
+	class  Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;

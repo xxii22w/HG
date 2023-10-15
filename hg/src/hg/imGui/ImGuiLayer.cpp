@@ -55,6 +55,16 @@ namespace hg {
 		ImGui::DestroyContext();
 	}
 
+	void ImGuiLayer::OnEvent(Event& e)
+	{
+		if (m_BlockEvents)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			e.m_Handled |= e.isInCategory(EventCategoryMouse) & io.WantCaptureMouse;
+			e.m_Handled |= e.isInCategory(EventCategoryKeyboard) & io.WantCaptureKeyboard;
+		}
+	}
+
 	void ImGuiLayer::Begin()
 	{
 		HG_PROFILE_FUNCTION();

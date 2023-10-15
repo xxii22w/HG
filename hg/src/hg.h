@@ -18,6 +18,9 @@
 #include "hg/Renderer/Renderer.h"
 #include "hg/Renderer/Renderer2D.h"
 #include "hg/Renderer/RenderCommand.h"
+#include "hg/Scene/Scene.h"
+#include "hg/Scene/Entity.h"
+#include "hg/Scene/Components.h"
 
 #include "hg/Renderer/Buffer.h"
 #include "hg/Renderer/Shader.h"

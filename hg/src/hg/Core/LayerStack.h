@@ -1,13 +1,14 @@
 #pragma once
 
-#include "hg/Core/Core.h"
+#include "hg/Core/Base.h"
+
 #include "Layer.h"
 
 #include <vector>
 
 namespace hg{
 
-	class HG_API LayerStack
+	class  LayerStack
 	{
 	public:
 		LayerStack();

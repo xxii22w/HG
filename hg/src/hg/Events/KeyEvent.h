@@ -6,7 +6,8 @@
 namespace hg {
 
 	// 键盘事务
-	class HG_API KeyEvent : public Event
+	class 
+		KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode()const { return m_KeyCode; }
@@ -18,7 +19,7 @@ namespace hg {
 		int m_KeyCode;
 	};
 	// 键盘按压事务
-	class HG_API KeyPressEvent : public KeyEvent
+	class  KeyPressEvent : public KeyEvent
 	{
 	public:
 		KeyPressEvent(int keycode,int repeatCount)
@@ -40,7 +41,7 @@ namespace hg {
 	};
 
 	// 键盘释放事务
-	class HG_API KeyReleasedEvent : public KeyEvent
+	class  KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
@@ -54,7 +55,7 @@ namespace hg {
 		}
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
-	class HG_API KeyTypedEvent : public KeyEvent
+	class  KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int keycode)
