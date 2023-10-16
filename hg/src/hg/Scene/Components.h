@@ -54,23 +54,14 @@ namespace hg {
 	{
 		ScriptableEntity* Instance = nullptr;
 
-		std::function<void()> InstantiateFunction;	
-		std::function<void()> DestoryInstanceFunction;;
-
-		std::function<void(ScriptableEntity*)> OnCreateFunction;
-		std::function<void(ScriptableEntity*)> OnDestoryFunction;
-		std::function<void(ScriptableEntity* ,Timestep)> OnUpdateFunction;
+		ScriptableEntity* (*InstantiateScript)();
+		void (*DestoryScript)(NativeScriptComponent*);
 
 		template<typename T>
 		void Bind()
 		{
-			InstantiateFunction = [&]() {Instance = new T(); };
-
-			DestoryInstanceFunction = [&]() {delete (T*)Instance; Instance = nullptr; };
-
-			OnCreateFunction = [](ScriptableEntity* instance) {((T*)instance)->OnCreate(); };
-			OnDestoryFunction = [](ScriptableEntity* instance) {((T*)instance)->OnDestory(); };
-			OnUpdateFunction = [](ScriptableEntity* instance, Timestep ts) {((T*)instance)->OnUpdate(ts); };
+			InstantiateScript = []() {return static_cast<ScriptableEntity*>(new T()); };
+			DestoryScript = [](NativeScriptComponent* nsc) {delete nsc->Instance; nsc->Instance = nullptr; };
 
 		}
 	};

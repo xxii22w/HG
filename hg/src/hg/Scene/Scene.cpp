@@ -67,15 +67,13 @@ namespace hg {
 				{
 					if (!nsc.Instance)
 					{
-						nsc.InstantiateFunction();
+						nsc.Instance = nsc.InstantiateScript();
 						nsc.Instance->m_Entity = Entity{ entity, this };
+						nsc.Instance->OnCreate();
 
-						if (nsc.OnCreateFunction)
-							nsc.OnCreateFunction(nsc.Instance);
 					}
 
-					if (nsc.OnUpdateFunction)
-						nsc.OnUpdateFunction(nsc.Instance, ts);
+						nsc.Instance->OnUpdate(ts);
 				});
 
 		}
