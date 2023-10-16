@@ -1,6 +1,7 @@
 #pragma once
 
 #include "hg.h"
+#include "src/Panels/SceneHierarchyPanel.h"
 
 namespace hg {
 
@@ -37,6 +38,9 @@ namespace hg {
 
 		glm::vec2 m_ViewportSize = { 0,0 };
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
+
+		// Panels
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 	};
 
 }
