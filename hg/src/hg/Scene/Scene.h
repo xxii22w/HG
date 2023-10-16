@@ -17,8 +17,10 @@ namespace hg {
 
 
 		void OnUpdate(Timestep ts);
+		void OnViewportResize(uint32_t width, uint32_t height);
 	private:
 		entt::registry m_Registry;		// 基本上所有组件和实体的容器  包括了  组件数据  以及  实体ID
+		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
 
 		friend class Entity;
 	};
