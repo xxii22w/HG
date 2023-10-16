@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "hg/Scene/SceneCamera.h"
+#include "hg/Scene/ScriptableEntity.h"
 
 namespace hg {
 
@@ -47,6 +48,31 @@ namespace hg {
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 
+	};
+
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
+
+		std::function<void()> InstantiateFunction;	
+		std::function<void()> DestoryInstanceFunction;;
+
+		std::function<void(ScriptableEntity*)> OnCreateFunction;
+		std::function<void(ScriptableEntity*)> OnDestoryFunction;
+		std::function<void(ScriptableEntity* ,Timestep)> OnUpdateFunction;
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateFunction = [&]() {Instance = new T(); };
+
+			DestoryInstanceFunction = [&]() {delete (T*)Instance; Instance = nullptr; };
+
+			OnCreateFunction = [](ScriptableEntity* instance) {((T*)instance)->OnCreate(); };
+			OnDestoryFunction = [](ScriptableEntity* instance) {((T*)instance)->OnDestory(); };
+			OnUpdateFunction = [](ScriptableEntity* instance, Timestep ts) {((T*)instance)->OnUpdate(ts); };
+
+		}
 	};
 
 }

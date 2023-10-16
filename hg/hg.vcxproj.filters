@@ -175,6 +175,7 @@
     <ClInclude Include="src\hg\Scene\Components.h" />
     <ClInclude Include="src\hg\Scene\Entity.h" />
     <ClInclude Include="src\hg\Scene\SceneCamera.h" />
+    <ClInclude Include="src\hg\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
