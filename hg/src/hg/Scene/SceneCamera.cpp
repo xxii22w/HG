@@ -11,9 +11,19 @@ namespace hg {
 
 	void SceneCamera::SetOrthographic(float size, float nearClip, float farClip)
 	{
+		m_ProjectionType = ProjectionType::Orthographic;
 		m_OrthographicSize = size;
 		m_OrthographicNear = nearClip;
 		m_OrthographicFar = farClip;
+		RecalculateProjection();
+	}
+
+	void SceneCamera::SetPrespective(float verticalFOV, float nearClip, float farClip)
+	{
+		m_ProjectionType = ProjectionType::perspective;
+		m_PerspectiveFOV = verticalFOV;
+		m_PerspectiveNear = nearClip;
+		m_PerspectiveFar = farClip;
 		RecalculateProjection();
 	}
 
@@ -25,12 +35,21 @@ namespace hg {
 
 	void SceneCamera::RecalculateProjection()
 	{
-		float orthoLeft = -m_OrthographicSize * m_AspectRadio * 0.5f;
-		float orthoRight = m_OrthographicSize * m_AspectRadio * 0.5f;
-		float orthoBottom = -m_OrthographicSize * 0.5f;
-		float orthoTop = m_OrthographicSize * 0.5f;
 
-		m_Projection = glm::ortho(orthoLeft, orthoRight,
-			orthoBottom, orthoTop, m_OrthographicNear, m_OrthographicFar);
+		if (m_ProjectionType == ProjectionType::perspective)
+		{
+			m_Projection = glm::perspective(m_PerspectiveFOV, m_AspectRadio, m_PerspectiveNear, m_PerspectiveFar);
+		}
+		else
+		{
+			float orthoLeft = -m_OrthographicSize * m_AspectRadio * 0.5f;
+			float orthoRight = m_OrthographicSize * m_AspectRadio * 0.5f;
+			float orthoBottom = -m_OrthographicSize * 0.5f;
+			float orthoTop = m_OrthographicSize * 0.5f;
+
+			m_Projection = glm::ortho(orthoLeft, orthoRight,
+				orthoBottom, orthoTop, m_OrthographicNear, m_OrthographicFar);
+		}
+
 	}
 }

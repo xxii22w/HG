@@ -25,6 +25,10 @@ namespace hg {
 		// Entity
 		auto square = m_ActiveScene->CreateEntity("Green Square");
 		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
+
+		auto square2 = m_ActiveScene->CreateEntity("Red Square");
+		square2.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
+
 		m_SquareEntity = square;
 
 		m_CameraEntity = m_ActiveScene->CreateEntity("Camera Entity");
@@ -207,9 +211,9 @@ namespace hg {
 
 		{
 			auto& camera = m_SecondCamera.GetComponent<CameraComponent>().Camera;
-			float orthoSize = camera.GetorthographicSize();
+			float orthoSize = camera.GetOrthographicSize();
 			if (ImGui::DragFloat("Second Camera Ortho Size", &orthoSize))
-				camera.SetorthographicSize(orthoSize);
+				camera.SetOrthographicSize(orthoSize);
 		}
 
 
