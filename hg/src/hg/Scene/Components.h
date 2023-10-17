@@ -64,6 +64,6 @@ namespace hg {
 			DestoryScript = [](NativeScriptComponent* nsc) {delete nsc->Instance; nsc->Instance = nullptr; };
 
 		}
-	};
+	};   
 
 }
