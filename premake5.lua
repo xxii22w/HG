@@ -23,12 +23,14 @@ IncludeDir["Imgui"] = "hg/vendor/imgui"
 IncludeDir["glm"] = "hg/vendor/glm"
 IncludeDir["stb_image"] = "hg/vendor/stb_image"
 IncludeDir["entt"] = "hg/vendor/entt/include"
+IncludeDir["yaml_cpp"] = "hg/vendor/yaml-cpp/include"
 
 
 
 include "hg/vendor/GLFW"
 include "hg/vendor/Glad"
 include "hg/vendor/imgui"
+include "hg/vendor/yaml-cpp"
 
 -- 项目 Hazel
 project "hg"
@@ -73,8 +75,8 @@ project "hg"
 		"%{IncludeDir.Imgui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}"
-
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}"
 
 	}
 
@@ -83,6 +85,7 @@ project "hg"
 		"GLFW",
 		"Glad",
 		"Imgui",
+		"yaml-cpp",
 		"opengl32.lib",
 		"Dwmapi.lib"
 	}

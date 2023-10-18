@@ -13,3 +13,6 @@
 [submodule "hg/hg/vendor/imgui"]
 	path = hg/hg/vendor/imgui
 	url = https://github.com/TheCherno/imgui
+[submodule "hg/vendor/yaml-cpp"]
+	path = hg/vendor/yaml-cpp
+	url = https://github.com/TheCherno/yaml-cpp

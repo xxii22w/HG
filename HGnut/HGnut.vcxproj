@@ -131,9 +131,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\hg\hg.vcxproj">
-      <Project>{14785900-0004-880B-69B2-880B555D880B}</Project>
-    </ProjectReference>
+    <ClInclude Include="EditorLayer.h" />
+    <ClInclude Include="src\Panels\SceneHierarchyPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EditorLayer.cpp" />
@@ -141,8 +140,9 @@
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EditorLayer.h" />
-    <ClInclude Include="src\Panels\SceneHierarchyPanel.h" />
+    <ProjectReference Include="..\hg\hg.vcxproj">
+      <Project>{14785900-0004-880B-69B2-880B555D880B}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

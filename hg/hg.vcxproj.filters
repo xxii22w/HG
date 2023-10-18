@@ -126,6 +126,9 @@
     <ClInclude Include="src\hg\Renderer\Buffer.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\Renderer\Camera.h">
+      <Filter>src\hg\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\hg\Renderer\Framebuffer.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
@@ -159,7 +162,22 @@
     <ClInclude Include="src\hg\Renderer\VertexArray.h">
       <Filter>src\hg\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\Scene\Components.h">
+      <Filter>src\hg\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Scene\Entity.h">
+      <Filter>src\hg\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\hg\Scene\Scene.h">
+      <Filter>src\hg\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Scene\SceneCamera.h">
+      <Filter>src\hg\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Scene\SceneSerializer.h">
+      <Filter>src\hg\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hg\Scene\ScriptableEntity.h">
       <Filter>src\hg\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\hg\imGui\ImGuiLayer.h">
@@ -171,11 +189,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Renderer\Camera.h" />
-    <ClInclude Include="src\hg\Scene\Components.h" />
-    <ClInclude Include="src\hg\Scene\Entity.h" />
-    <ClInclude Include="src\hg\Scene\SceneCamera.h" />
-    <ClInclude Include="src\hg\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -253,7 +266,16 @@
     <ClCompile Include="src\hg\Renderer\VertexArray.cpp">
       <Filter>src\hg\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\hg\Scene\Entity.cpp">
+      <Filter>src\hg\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\hg\Scene\Scene.cpp">
+      <Filter>src\hg\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\Scene\SceneCamera.cpp">
+      <Filter>src\hg\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\Scene\SceneSerializer.cpp">
       <Filter>src\hg\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\imGui\ImGuiBuild.cpp">
@@ -268,7 +290,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\hg\Scene\Entity.cpp" />
-    <ClCompile Include="src\hg\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>
