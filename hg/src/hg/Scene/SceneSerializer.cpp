@@ -183,7 +183,7 @@ namespace hg {
 	{
 		std::ifstream stream(filepath);
 		std::stringstream strStream;
-		strStream << stream.rdbuf();
+		strStream << stream.rdbuf();		// rdbuf()可以实现一个流对象指向的内容用另一个流对象来输出
 
 		YAML::Node data = YAML::Load(strStream.str());
 		if (!data["Scene"])
