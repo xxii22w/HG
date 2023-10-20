@@ -24,6 +24,7 @@ IncludeDir["glm"] = "hg/vendor/glm"
 IncludeDir["stb_image"] = "hg/vendor/stb_image"
 IncludeDir["entt"] = "hg/vendor/entt/include"
 IncludeDir["yaml_cpp"] = "hg/vendor/yaml-cpp/include"
+IncludeDir["ImGuizmo"] = "hg/vendor/ImGuizmo"
 
 
 
@@ -54,8 +55,11 @@ project "hg"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp",
 		"%{prj.name}/src/vendor/glm/glm/**.hpp",
 		"%{prj.name}/src/vendor/glm/glm/**.inl"
+
 	}
 
 	defines
@@ -76,7 +80,8 @@ project "hg"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGuizmo}"
 
 	}
 
@@ -89,6 +94,10 @@ project "hg"
 		"opengl32.lib",
 		"Dwmapi.lib"
 	}
+
+	filter "files:hg/vendor/ImGuizmo/**.cpp"
+		flags { "NoPCH" }
+
 
 	-- 过滤器 windows
 	filter "system:windows"

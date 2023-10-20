@@ -8,6 +8,8 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
+#include "ImGuizmo.h"
+
 namespace hg {
 
 	ImGuiLayer::ImGuiLayer()
@@ -57,6 +59,7 @@ namespace hg {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
+
 	}
 
 	void ImGuiLayer::OnEvent(Event& e)

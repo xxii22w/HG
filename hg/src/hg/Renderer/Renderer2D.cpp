@@ -130,6 +130,18 @@ namespace hg {
 		s_Data.TextureSlotIndex = 1;
 	}
 
+	void Renderer2D::BeginScene(const EditorCamera& camera)
+	{
+		HG_PROFILE_FUNCTION();
+
+		glm::mat4 viewProj = camera.GetViewProjection();
+
+		s_Data.TextureShader->bind();
+		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+
+		StartNewBatch();
+	}
+
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
 		HG_PROFILE_FUNCTION();

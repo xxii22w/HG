@@ -2,6 +2,7 @@
 
 #include "hg.h"
 #include "src/Panels/SceneHierarchyPanel.h"
+#include "hg/Renderer/EditorCamera.h"
 
 namespace hg {
 
@@ -38,12 +39,15 @@ namespace hg {
 
 		bool m_PrimaryCamera = true;
 
+		EditorCamera m_EditorCamera;
 
 		bool m_ViewportFocuse = false,m_ViewportHovered = false;
 		Ref<Texture2D> m_CheckerboardTexture;
 
 		glm::vec2 m_ViewportSize = { 0,0 };
 		glm::vec4 m_SquareColor = { 0.2f, 0.3f, 0.8f, 1.0f };
+
+		int m_GizmoType = -1;
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;

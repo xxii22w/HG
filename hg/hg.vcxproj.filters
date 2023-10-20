@@ -31,11 +31,17 @@
     <Filter Include="src\hg\Scene">
       <UniqueIdentifier>{28A75213-140A-E2B7-BD8F-1A6EA9D1AD3A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\hg\Utils">
+      <UniqueIdentifier>{6B3B8013-579E-0FB8-0024-486EEC65DB3A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\hg\imGui">
       <UniqueIdentifier>{55BFE514-4122-75B9-EAA7-AD6FD6E9403C}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\ImGuizmo">
+      <UniqueIdentifier>{73BF7F4C-DF4A-ED10-E85B-700554664911}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor\stb_image">
       <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
@@ -180,16 +186,21 @@
     <ClInclude Include="src\hg\Scene\ScriptableEntity.h">
       <Filter>src\hg\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\Utils\PlatformUtils.h">
+      <Filter>src\hg\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="src\hg\imGui\ImGuiLayer.h">
       <Filter>src\hg\imGui</Filter>
     </ClInclude>
     <ClInclude Include="src\hgpch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClInclude>
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Utils\PlatformUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -214,6 +225,9 @@
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\windows\WindowsInput.cpp">
+      <Filter>src\Platform\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\windows\WindowsPlatformUtils.cpp">
       <Filter>src\Platform\windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\windows\WindowsWindow.cpp">
@@ -288,9 +302,11 @@
     <ClCompile Include="src\hgpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>vendor\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\windows\WindowsPlatformUtils.cpp" />
   </ItemGroup>
 </Project>
