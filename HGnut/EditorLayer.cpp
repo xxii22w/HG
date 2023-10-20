@@ -23,7 +23,8 @@ namespace hg {
 
 		m_CheckerboardTexture = hg::Texture2D::Create("assets/textures/1.jpg");
 
-		FramebufferSpecification fbSpec;
+		FramebufferSpecification fbSpec; 
+		fbSpec.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 		m_Framebuffer = Framebuffer::Create(fbSpec);
@@ -315,7 +316,7 @@ namespace hg {
 			}
 			case Key::O:
 			{
-				if (control)
+				if (control) 
 					OpenScene();
 
 				break;
