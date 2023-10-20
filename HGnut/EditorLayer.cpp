@@ -104,6 +104,7 @@ namespace hg {
 			(spec.Width != m_ViewportSize.x || spec.Height != m_ViewportSize.y))
 		{
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			m_CameraController.OnResize(m_ViewportSize.x, m_ViewportSize.y);
 			m_EditorCamera.SetViewportSize(m_ViewportSize.x, m_ViewportSize.y);
 
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
@@ -139,7 +140,7 @@ namespace hg {
 		{
 			// 符合，输出颜色值
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-			HG_CORE_WARN("Pixel data = {0}", pixelData);
+			m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
 		}
 
 		m_Framebuffer->Unbind();
@@ -227,6 +228,11 @@ namespace hg {
 
 		ImGui::Begin("Stats:");
 
+		std::string name = "None";
+		if (m_HoveredEntity)
+			name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
+		ImGui::Text("Hovered Entity: %s", name.c_str());
+
 		auto stats = hg::Renderer2D::GetStatistics();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
@@ -238,7 +244,13 @@ namespace hg {
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });	// 样式推送器
 		ImGui::Begin("Viewport");
-		auto viewportOffset = ImGui::GetCursorPos(); // Includes tab bar
+		
+		auto viewportMinRegion  = ImGui::GetWindowContentRegionMin();
+		auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+		auto viewportOffest = ImGui::GetWindowPos();
+
+		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffest.x, viewportMinRegion.y + viewportOffest .y};
+		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffest.x, viewportMaxRegion.y + viewportOffest.y };
 
 		m_ViewportFocuse = ImGui::IsWindowFocused(); // 窗口聚焦
 		m_ViewportHovered = ImGui::IsWindowHovered(); // 窗口悬停
@@ -249,15 +261,6 @@ namespace hg {
 
 		uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
-
-		auto windowSize = ImGui::GetWindowSize();
-		ImVec2 minBound = ImGui::GetWindowPos();
-		minBound.x += viewportOffset.x;
-		minBound.y += viewportOffset.y;
-
-		ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
-		m_ViewportBounds[0] = { minBound.x, minBound.y };
-		m_ViewportBounds[1] = { maxBound.x, maxBound.y };
 
 		// Gizmo
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -326,6 +329,7 @@ namespace hg {
 		// 快捷方式需要触发事件
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressEvent>(HG_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(HG_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressEvent& e)
@@ -373,6 +377,16 @@ namespace hg {
 				m_GizmoType = ImGuizmo::OPERATION::SCALE;
 				break;
 		}
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		if (e.GetMouseButton() == Mouse::ButtonLeft)
+		{
+			if (m_ViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+				m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+		}
+		return false;
 	}
 
 	void EditorLayer::NewScene()
