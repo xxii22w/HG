@@ -3,6 +3,7 @@
 #include "hg.h"
 #include "src/Panels/SceneHierarchyPanel.h"
 #include "hg/Renderer/EditorCamera.h"
+#include "src/Panels/ContentBrowserPanel.h"
 
 namespace hg {
 
@@ -54,6 +55,7 @@ namespace hg {
 
 		// Panels
 		SceneHierarchyPanel m_SceneHierarchyPanel;
+		ContentBrowserPanel m_ContentBrowserPanel;
 	};
 
 }

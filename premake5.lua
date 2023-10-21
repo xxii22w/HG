@@ -14,6 +14,7 @@ include "hg/vendor/GLFW"
 include "hg/vendor/Glad"
 include "hg/vendor/imgui"
 include "hg/vendor/yaml-cpp"
+-- include "Hazel/vendor/box2D"
 
 project "hg"
     location "%{prj.name}" -- 规定了targetdir和objdir还需要这个吗，需要，这里的location是生成的vcproj的位置
@@ -56,6 +57,8 @@ project "hg"
 		"%{prj.name}/vendor/yaml-cpp/include",
 		"%{prj.name}/vendor/imguizmo",
 		"%{VULKAN_SDK}/Include",
+		--"%{prj.name}/vendor/Mono/include",
+		--"%{prj.name}/vendor/box2D/include"
 	}
 	
 	--filter "files:'%{prj.name}'/vendor/imguizmo/ImGuizmo.cpp"
@@ -80,6 +83,7 @@ project "hg"
 		libdirs
 		{
 			"%{VULKAN_SDK}/Lib",
+			--"%{prj.name}/vendor/Mono/lib/Debug"
 		}
 		
 		links
@@ -87,6 +91,7 @@ project "hg"
 			"spirv-cross-cored.lib",
 			"spirv-cross-glsld.lib",
 			"SPIRV-Toolsd.lib",
+			--"libmono-static-sgen.lib"
 		}
 		
         symbols "On"
@@ -99,6 +104,7 @@ project "hg"
 		libdirs
 		{
 			"%{VULKAN_SDK}/Lib",
+			--"%{prj.name}/vendor/Mono/lib/Release"
 		}
 		
 		links
@@ -107,6 +113,7 @@ project "hg"
 			"spirv-cross-core.lib",
 			"spirv-cross-glsl.lib",
 			--"SPIRV-Tools.lib",
+			--"libmono-static-sgen.lib"
 		}
 		runtime "Release" -- 运行时链接的dll是release类型的
 
@@ -136,6 +143,7 @@ project "Sandbox"
 		"hg/vendor/imgui",
 		"hg/vendor/entt/include",
 		"hg/vendor/yaml-cpp/include",
+		--"Hazel/vendor/box2D/include"
 	}
 
 	links { "hg" }
@@ -179,6 +187,8 @@ project "HGnut"
 		"hg/vendor/entt/include",
 		"hg/vendor/yaml-cpp/include",
 		"hg/vendor/imguizmo",
+		--"Hazel/vendor/Mono/include",
+		--"Hazel/vendor/box2D/include"
 	}
 
 	links { "hg" }
