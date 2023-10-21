@@ -5,7 +5,7 @@
 #include "hg/Renderer/RenderCommand.h"
 #include "hg/Renderer/Camera.h"
 #include <glm/gtc/type_ptr.hpp>
-
+#include "hg/Renderer/UniformBuffer.h"
 
 
 namespace hg {
@@ -45,6 +45,13 @@ namespace hg {
 
 
 		Renderer2D::Statistics Stats;
+
+		struct CameraData
+		{
+			glm::mat4 ViewProjection;
+		};
+		CameraData CameraBuffer;
+		Ref<UniformBuffer> CameraUniformBuffer;
 
 	};
 
@@ -100,8 +107,7 @@ namespace hg {
 
 		// 转移所有权
 		s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-		s_Data.TextureShader->bind();
-		s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
+
 
 		// Set all texture sloats to 0
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
@@ -111,37 +117,30 @@ namespace hg {
 		s_Data.QuadVertexPositions[2] = { 0.5f,0.5f,0.0f,1.0f };
 		s_Data.QuadVertexPositions[3] = { -0.5f,0.5f,0.0f,1.0f };
 
+		s_Data.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 	}
 	void Renderer2D::Shutdown()
 	{
 		HG_PROFILE_FUNCTION();
 
-		Flush();
+		delete[] s_Data.QuadVertexBufferBase;
 	}
 
 	void Renderer2D::BeginScene(const Camera& camera, const glm::mat4& transform)
 	{
 		HG_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-
-		s_Data.TextureShader->bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
-
-		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureSlotIndex = 1;
+		s_Data.CameraBuffer.ViewProjection = camera.GetProjection() * glm::inverse(transform);
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
+		StartNewBatch();
 	}
 
 	void Renderer2D::BeginScene(const EditorCamera& camera)
 	{
 		HG_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetViewProjection();
-
-		s_Data.TextureShader->bind();
-		s_Data.TextureShader->SetMat4("u_ViewProjection", viewProj);
+		s_Data.CameraBuffer.ViewProjection = camera.GetViewProjection();
+		s_Data.CameraUniformBuffer->SetData(&s_Data.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartNewBatch();
 	}
@@ -152,27 +151,29 @@ namespace hg {
 		s_Data.TextureShader->bind();
 		s_Data.TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
-		s_Data.QuadIndexCount = 0;
-		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
-
-		s_Data.TextureSlotIndex = 1;
+		StartNewBatch();
 	}
+
 	void Renderer2D::EndScene()
 	{
 		HG_PROFILE_FUNCTION();
 
-		uint32_t dataSize = (uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase;
-		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
-
 		Flush();
 	}
 
+
 	void Renderer2D::Flush()
 	{
+		if (s_Data.QuadIndexCount == 0)
+			return; // Nothing to draw
+		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
+
 		// Bind texture
 		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
 			s_Data.TextureSlots[i]->Bind(i);
 
+		s_Data.TextureShader->bind();
 		RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 		s_Data.Stats.DrawCalls++;
 	}

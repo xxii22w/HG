@@ -2,6 +2,7 @@
 
 #include "hg/Events/Event.h"
 #include "hg/Core/MouseCodes.h"
+#include <sstream>
 
 namespace hg {
 	// 鼠标移动事件
@@ -15,11 +16,11 @@ namespace hg {
 		inline float GetX()const { return m_MouseX; }
 		inline float GetY()const { return m_MouseY; }
 
-		std::string ToString()const override
+		std::string ToString() const override
 		{
-			std::stringstream ss;
-			ss << "MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
-			return ss.str();
+			std::stringstream a;
+			a << "MouseMovedEvent: xPos = " << GetX() << ", yPos = " << GetY();
+			return a.str();
 		}
 
 		EVENT_CLASS_TYPE(MouseMoved)

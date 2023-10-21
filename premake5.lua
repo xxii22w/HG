@@ -1,245 +1,237 @@
--- 工作空间名称
-workspace "hg"
-	-- 架构
-	architecture "x64"
-	startproject "HGnut"
-	-- 配置
-	configurations
-	{
-		"Debug",
-		"Release",
-		"Dist"
-	}
+VULKAN_SDK = os.getenv("VULKAN_SDK")
 
--- 自定义变量 输出目录
+workspace "hg"
+    architecture "x64"
+    configurations { "Debug", "Release", "Dist" }
+	startproject "HGnut"
+
+--当前路径为premake5.lua所在路径
+--create outputdir macro
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
--- 导入GLFW库  
--- IncludeDir 只需要添加为编译器的包含目录
-IncludeDir = {}
-IncludeDir["GLFW"] = "hg/vendor/GLFW/include"
-IncludeDir["Glad"] = "hg/vendor/Glad/include"
-IncludeDir["Imgui"] = "hg/vendor/imgui"
-IncludeDir["glm"] = "hg/vendor/glm"
-IncludeDir["stb_image"] = "hg/vendor/stb_image"
-IncludeDir["entt"] = "hg/vendor/entt/include"
-IncludeDir["yaml_cpp"] = "hg/vendor/yaml-cpp/include"
-IncludeDir["ImGuizmo"] = "hg/vendor/ImGuizmo"
-
-
-
+--使用submodule的premake5.lua文件
 include "hg/vendor/GLFW"
 include "hg/vendor/Glad"
 include "hg/vendor/imgui"
 include "hg/vendor/yaml-cpp"
 
--- 项目 Hazel
 project "hg"
-	-- 位置
-	location "hg"
-	-- 项目类型
-	kind "StaticLib"
-	language "C++"
-	staticruntime "on"
-	cppdialect "C++20"
+    location "%{prj.name}" -- 规定了targetdir和objdir还需要这个吗，需要，这里的location是生成的vcproj的位置
+    kind "StaticLib"
+    language "C++"
+	staticruntime "off"
+	cppdialect "C++17"
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}") --记得要加括号
+	objdir   ("bin-int/" .. outputdir .. "/%{prj.name}") --这里的中英文括号看上去好像
+	links {"GLFW", "opengl32.lib", "Glad", "imgui", "yaml-cpp"}
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-	pchheader "hgpch.h"
-	pchsource "hg/src/hgpch.cpp"
-
-	files
-	{
-		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/vendor/stb_image/**.h",
-		"%{prj.name}/vendor/stb_image/**.cpp",
-		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.h",
-		"%{prj.name}/vendor/ImGuizmo/ImGuizmo.cpp",
-		"%{prj.name}/src/vendor/glm/glm/**.hpp",
-		"%{prj.name}/src/vendor/glm/glm/**.inl"
-
-	}
+    pchheader "hgpch.h"
+    pchsource "%{prj.name}/src/hgpch.cpp"
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS"
+	    "_CRT_SECURE_NO_WARNINGS", "YAML_CPP_STATIC_DEFINE",
 	}
-
-	-- 包含路径
-	includedirs
-	{
-		-- 日志库 spdlog
-		"hg/vendor/spdlog/include",
-		"hg/src",
-		-- 添加
-		"%{IncludeDir.GLFW}",
-		"%{IncludeDir.Glad}",
-		"%{IncludeDir.Imgui}",
-		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}",
-		"%{IncludeDir.ImGuizmo}"
-
-	}
-
-	links
-	{
-		"GLFW",
-		"Glad",
-		"Imgui",
-		"yaml-cpp",
-		"opengl32.lib",
-		"Dwmapi.lib"
-	}
-
-	filter "files:hg/vendor/ImGuizmo/**.cpp"
-		flags { "NoPCH" }
-
-
-	-- 过滤器 windows
-	filter "system:windows"
-
-		-- WinSDK版本 这个需要本地化设置 这里保持最新版本
-		systemversion "latest"
-
-		defines
-		{
-			"HG_PLATFORM_WINDOWS",
-			"HG_BUILD_DLL",
-			"_WINDLL",
-			"GLFW_INCLUDE_NONE", -- 那将不会包含任何glfw，他将不报行任何opengl头文件
-			
-		}
-
-
-	-- 过滤器 Debug配置 仅适用于Debug
-	filter "configurations:Debug"
-		defines "HG_DEBUG"
-		runtime "Debug"
-		symbols "on"
-	-- 过滤器 Release配置
-	filter "configurations:Release"
-		defines "HG_RELEASE"
-		runtime "Release"
-		-- 启用优化
-		optimize "on"
-	-- 过滤器 Dist配置
-	filter "configurations:Dist"
-		defines "HG_DIST"
-		runtime "Release"
-		optimize "on"
-
-
-project "HGnut"
-	location "HGnut"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++20"
-	staticruntime "on"
-
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
+	
 	files
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/**.hpp",
+		"%{prj.name}/vendor/imguizmo/ImGuizmo.h",
+		"%{prj.name}/vendor/imguizmo/ImGuizmo.cpp"
 	}
 
 	includedirs
 	{
-		"hg/vendor/spdlog/include",
-		"hg/src",
-		"hg/vendor",
-		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
-
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/src",
+		"%{prj.name}/src/Hazel",
+		"%{prj.name}/vendor/GLFW/include",
+		"%{prj.name}/vendor/Glad/include",
+		"%{prj.name}/vendor/imgui",
+		"%{prj.name}/vendor/glm",
+		"%{prj.name}/vendor/stb_image",
+		"%{prj.name}/vendor/entt/include",
+		"%{prj.name}/vendor/yaml-cpp/include",
+		"%{prj.name}/vendor/imguizmo",
+		"%{VULKAN_SDK}/Include",
 	}
+	
+	--filter "files:'%{prj.name}'/vendor/imguizmo/ImGuizmo.cpp"
+	filter "files:hg/vendor/imguizmo/ImGuizmo.cpp"
+	--filter "files:**.cpp"
+	flags { "NoPCH" }
 
-	links
-	{
-		"hg"
-	}
-
-	filter "system:windows"
-		systemversion "latest"
-
-		defines
+	filter { "system:windows" }
+	    systemversion "latest"
+		defines {"HG_PLATFORM_WINDOWS", "GLFW_INCLUDE_NONE", "HG_ENABLE_ASSERTS"}
+		
+		postbuildcommands
 		{
-			"HG_PLATFORM_WINDOWS",
+		    -- "copy default.config bin\\project.config"
+			-- copy freom relative path to ... 注意这里的COPY前面没有%
+		    ("{COPY} %{cfg.buildtarget.relpath} ../bin/" ..outputdir.."\\Sandbox")
 		}
 
-
-		filter "configurations:Debug"
-			defines "HG_DEBUG"
-			runtime "Debug"
-			symbols "on"
-
-		filter "configurations:Release"
-			defines "HG_RELEASE"
-			runtime "Release"
-			optimize "on"
-
-		filter "configurations:Dist"
-			defines "HG_DIST"
-			runtime "Release"
-			optimize "on"
-
-
-project "SandBox"
-		location "Sandbox"
-		kind "ConsoleApp"
-		language "C++"
-		cppdialect "C++20"
-		staticruntime "on"
-		
-		
-		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-		
-		files
+    filter { "configurations:Debug" }
+        defines { "HG_DEBUG"}
+		-- in VS2019 that is Additional Library Directories
+		libdirs
 		{
-			"%{prj.name}/src/**.h",
-			"%{prj.name}/src/**.cpp",
-		}
-		
-		includedirs
-		{
-			"hg/vendor/spdlog/include",
-			"hg/src",
-			"hg/vendor",
-			"%{IncludeDir.glm}"
+			"%{VULKAN_SDK}/Lib",
 		}
 		
 		links
 		{
-			"hg"
+			"spirv-cross-cored.lib",
+			"spirv-cross-glsld.lib",
+			"SPIRV-Toolsd.lib",
 		}
 		
-		filter "system:windows"
-			systemversion "latest"
+        symbols "On"
+		runtime "Debug" -- 运行时链接的dll是debug类型的	
+
+    filter { "configurations:Release"}
+        defines { "HG_RELEASE"}
+        optimize "On"
+		-- in VS2019 that is Additional Library Directories
+		libdirs
+		{
+			"%{VULKAN_SDK}/Lib",
+		}
 		
-			defines
-			{
-				"HG_PLATFORM_WINDOWS",
-			}
+		links
+		{
+			"shaderc_shared.lib",
+			"spirv-cross-core.lib",
+			"spirv-cross-glsl.lib",
+			--"SPIRV-Tools.lib",
+		}
+		runtime "Release" -- 运行时链接的dll是release类型的
+
+
+    filter { "configurations:Dist"}
+		defines { "HG_DIST"}
+	    optimize "On"
+
+project "Sandbox"
+	location "%{prj.name}"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
+
+	targetdir  ("bin/"..outputdir.."/%{prj.name}")
+	objdir  ("bin-int/"..outputdir.."/%{prj.name}")
+    
+	files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
+
+    includedirs
+	{
+        "hg/vendor/spdlog/include",
+		"hg/src",
+		"hg/src/Hazel",
+		"hg/vendor/glm",
+		"hg/vendor/imgui",
+		"hg/vendor/entt/include",
+		"hg/vendor/yaml-cpp/include",
+	}
+
+	links { "hg" }
+
+    filter { "system:Windows" }
+	    systemversion "latest"
+		 defines { "HG_PLATFORM_WINDOWS"}
+
+    filter { "configurations:Debug"}
+        defines { "DEBUG"}
+        symbols "On"
+
+    filter { "configurations:Release"}
+        defines { "NDEBUG" }
+        optimize "On"
+
+    filter { "configurations:Dist"}
+		defines { "NDEBUG"}
+		optimize "On"
+
+
+project "HGnut"
+	location "%{prj.name}"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
+
+	targetdir  ("bin/"..outputdir.."/%{prj.name}")
+	objdir  ("bin-int/"..outputdir.."/%{prj.name}")
+    
+	files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
+
+    includedirs
+	{
+        "hg/vendor/spdlog/include",
+		"hg/src",
+		"hg/src/hg",
+		"hg/vendor/glm",
+		"hg/vendor/imgui",
+		"hg/vendor/entt/include",
+		"hg/vendor/yaml-cpp/include",
+		"hg/vendor/imguizmo",
+	}
+
+	links { "hg" }
+	
+
+    filter { "system:Windows" }
+	    systemversion "latest"
+		 defines { "HG_PLATFORM_WINDOWS"}
+		 			
+		links
+		{
+		    -- windows needed libs for mono
+			"Ws2_32.lib",
+			"Bcrypt.lib",
+			"Version.lib",
+			"Winmm.lib"
+		}
 		
+
+    filter { "configurations:Debug"}
+        defines { "HG_DEBUG"}
+        symbols "On"
 		
-			filter "configurations:Debug"
-				defines "HG_DEBUG"
-				runtime "Debug"
-				symbols "on"
+		libdirs
+		{
+			"%{VULKAN_SDK}/Lib"
+		}
 		
-			filter "configurations:Release"
-				defines "HG_RELEASE"
-				runtime "Release"
-				optimize "on"
+		links
+		{
+			"shaderc_sharedd.lib"
+		}
 		
-			filter "configurations:Dist"
-				defines "HG_DIST"
-				runtime "Release"
-				optimize "on"
+
+    filter { "configurations:Release"}
+        defines { "HG_RELEASE" }
+        optimize "On"
+
+    filter { "configurations:Dist"}
+		defines { "HG_DIST"}
+		optimize "On"
+
+
+-- project "Hazel-ScriptCore"
+-- 	location "%{prj.name}"
+-- 	kind "SharedLib"
+-- 	language "C#"
+-- 	dotnetframework "4.7.2"
+	
+-- 	targetdir ("%{prj.name}/Build")
+-- 	objdir ("%{prj.name}/Intermediates")
+
+-- 	files 
+-- 	{
+-- 		"%{prj.name}/Scripts/**.cs"
+-- 	}

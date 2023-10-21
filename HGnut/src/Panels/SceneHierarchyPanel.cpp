@@ -1,8 +1,9 @@
 #include "SceneHierarchyPanel.h"
 #include "hg/Scene/Components.h"
-#include <imgui/imgui.h>
-#include <imgui/imgui_internal.h>
+#include <imgui.h>
+#include <ImGuizmo.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <imgui_internal.h>
 
 namespace hg {
 

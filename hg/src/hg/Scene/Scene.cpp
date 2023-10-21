@@ -119,12 +119,10 @@ namespace hg {
 	void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
 	{
 		Renderer2D::BeginScene(camera);
-
 		auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 		for (auto entity : group)
 		{
 			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-
 			Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 		}
 		Renderer2D::EndScene();
@@ -171,12 +169,14 @@ namespace hg {
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity entity, CameraComponent& component)
 	{
-		component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
+		if (m_ViewportWidth > 0 && m_ViewportHeight > 0)
+			component.Camera.SetViewportSize(m_ViewportWidth, m_ViewportHeight);
 	}
 
 	template<>
 	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
 	{
+
 	}
 
 	template<>

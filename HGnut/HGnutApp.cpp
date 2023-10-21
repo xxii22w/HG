@@ -8,8 +8,8 @@ namespace hg {
 	class HGnut: public Application
 	{
 	public:
-		HGnut()
-			: Application("HGnut")
+		HGnut(ApplicationCommandLineArgs args)
+			: Application("HGnut",args)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -19,9 +19,9 @@ namespace hg {
 		}
 	};
 
-	Application* CreateApplication()
+	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new HGnut();
+		return new HGnut(args);
 	}
 
 }

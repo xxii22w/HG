@@ -1,7 +1,19 @@
 # 忽略的目录
-.vs/
-bin/
+**/bin/
+!vendor/premake/bin/
 bin-int/
 
-# 文件
-*.user
+# hg files
+*.log
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+
+# Directories
+hg/vendor/VulkanSDK
+HGnut/assets/cache
+scripts/__pycache__

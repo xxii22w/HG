@@ -16,10 +16,24 @@
 
 
 namespace hg {
+
+	// 应用程序命令行参数
+	struct ApplicationCommandLineArgs
+	{
+		int Count = 0;
+		char** Args = nullptr;
+
+		const char* operator[](int index) const
+		{
+			HG_CORE_ASSERT(index < Count);
+			return Args[index];
+		}
+	};
+
 	class  Application
 	{
 	public:
-		Application(const std::string& name = "hg App");
+		Application(const std::string& name = "hg App", ApplicationCommandLineArgs args = ApplicationCommandLineArgs());
 		virtual ~Application();
 		void run();
 		// 开启事务
@@ -32,6 +46,8 @@ namespace hg {
 
 		ImGuiLayer* GetImGuiLayer() { return m_ImGuiLayer; }
 		inline static Application& Get() { return *s_Instance; }
+
+		ApplicationCommandLineArgs GetCommandLineArgs() const { return m_CommandLineArgs; }
 		inline Window& GetWindow() { return *m_Window; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
@@ -40,6 +56,7 @@ namespace hg {
 	private:
 		ImGuiLayer* m_ImGuiLayer;
 		std::unique_ptr<Window> m_Window;
+		ApplicationCommandLineArgs m_CommandLineArgs;
 		bool m_Running = true;
 		bool m_Minimized = false;
 		LayerStack m_LayerStack;
@@ -48,6 +65,6 @@ namespace hg {
 		static Application* s_Instance;
 	};
 	// 在客户端实现的
-	Application* CreateApplication();
+	Application* CreateApplication(ApplicationCommandLineArgs args);
 }
 

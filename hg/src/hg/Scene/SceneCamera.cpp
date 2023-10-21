@@ -29,6 +29,7 @@ namespace hg {
 
 	void SceneCamera::SetViewportSize(uint32_t width, uint32_t height)
 	{
+		HG_CORE_ASSERT(width > 0 && height > 0);
 		m_AspectRadio = (float)width / (float)height;
 		RecalculateProjection();
 	}
