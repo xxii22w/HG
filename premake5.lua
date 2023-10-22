@@ -14,7 +14,7 @@ include "hg/vendor/GLFW"
 include "hg/vendor/Glad"
 include "hg/vendor/imgui"
 include "hg/vendor/yaml-cpp"
--- include "Hazel/vendor/box2D"
+include "hg/vendor/Box2D"
 
 project "hg"
     location "%{prj.name}" -- 规定了targetdir和objdir还需要这个吗，需要，这里的location是生成的vcproj的位置
@@ -24,7 +24,7 @@ project "hg"
 	cppdialect "C++17"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}") --记得要加括号
 	objdir   ("bin-int/" .. outputdir .. "/%{prj.name}") --这里的中英文括号看上去好像
-	links {"GLFW", "opengl32.lib", "Glad", "imgui", "yaml-cpp"}
+	links {"GLFW", "opengl32.lib", "Glad", "imgui", "yaml-cpp","Box2D"}
 
     pchheader "hgpch.h"
     pchsource "%{prj.name}/src/hgpch.cpp"
@@ -58,7 +58,7 @@ project "hg"
 		"%{prj.name}/vendor/imguizmo",
 		"%{VULKAN_SDK}/Include",
 		--"%{prj.name}/vendor/Mono/include",
-		--"%{prj.name}/vendor/box2D/include"
+		"%{prj.name}/vendor/Box2D/include"
 	}
 	
 	--filter "files:'%{prj.name}'/vendor/imguizmo/ImGuizmo.cpp"
@@ -143,7 +143,7 @@ project "Sandbox"
 		"hg/vendor/imgui",
 		"hg/vendor/entt/include",
 		"hg/vendor/yaml-cpp/include",
-		--"Hazel/vendor/box2D/include"
+		"hg/vendor/Box2D/include"
 	}
 
 	links { "hg" }
@@ -188,7 +188,7 @@ project "HGnut"
 		"hg/vendor/yaml-cpp/include",
 		"hg/vendor/imguizmo",
 		--"Hazel/vendor/Mono/include",
-		--"Hazel/vendor/box2D/include"
+		"hg/vendor/box2D/include"
 	}
 
 	links { "hg" }

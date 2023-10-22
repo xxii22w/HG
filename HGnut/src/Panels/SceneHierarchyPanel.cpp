@@ -20,6 +20,7 @@ namespace hg {
 		m_SelectionContext = {};
 	}
 
+	// SceneHierarchyPanel分为两个子窗口, Hierarchy窗口和Inspector窗口
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		ImGui::Begin("Scene Hierarchy");
@@ -34,6 +35,7 @@ namespace hg {
 			m_SelectionContext = {};
 
 		// Right-click on blank space
+		// 1代表鼠标右键(0代表左键、2代表中键), bool over_item为false, 意味着这个窗口只在空白处点击才会触发 
 		if (ImGui::BeginPopupContextWindow(0, 1 | ImGuiPopupFlags_NoOpenOverItems)) //略 ImGuiID 参数并测试任何弹出窗口。
 		{
 			if (ImGui::MenuItem("Create Empty Entity"))
@@ -105,30 +107,39 @@ namespace hg {
 		ImGuiIO& io = ImGui::GetIO();
 		auto boldFont = io.Fonts->Fonts[0];
 
+		// Translation、Scale都会有相同的类似DragFloat("##Y"的函数, 而ImGui是根据输入的"##Y"来作为identifier的
+		// 为了让不同组件的相同名字的值可以各自通过UI读写, 这里需要在绘制最开始加入ID, 绘制结束后PopId
 		ImGui::PushID(label.c_str()); // 保证唯一性
-		ImGui::Columns(2);
+
+		// 先在最左边绘制vector代表的label
+		ImGui::Columns(2);	// 大概意思是Label占两列的空间
 		ImGui::SetColumnWidth(0, columnWidth);
 		ImGui::Text(label.c_str());
 		ImGui::NextColumn();
 
+		// 这行代码参考自ImGui::DragScalarN函数, 意思是我要在一行绘制3个Item
 		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0,0 });
 
+		// 基于字体的大小和Padding算出这一行的行高
 		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 		ImVec2 buttonSize = { lineHeight + 3.0f,lineHeight };
 
-		// 设置样式
+		// x值的处理, 三个StyleColor分别对应: 按钮本身颜色、鼠标悬停在按钮上的颜色、点击按钮时的颜色
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f,0.1f,0.15f,1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f,0.2f,0.2f,1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f,0.1f,0.15f,1.0f });
+
 		ImGui::PushFont(boldFont);
+
 		// 按下x，就设为0
 		if (ImGui::Button("X", buttonSize))
 			values.x = resetValue;
 		ImGui::PopFont();
-		ImGui::PopStyleColor(3);
+		ImGui::PopStyleColor(3);		// 把上面Push的三个StyleColor给拿出来
 
-		ImGui::SameLine();	// 同行
+		// 把x值显示出来, 同时提供拖拽修改功能
+		ImGui::SameLine();	
 		ImGui::DragFloat("###X", &values.x, 0.1f,0.0f,0.0f,"%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
@@ -228,17 +239,42 @@ namespace hg {
 
 		if (ImGui::BeginPopup("AddComponent"))
 		{
-			if (ImGui::MenuItem("Camera"))
+			if (!m_SelectionContext.HasComponent<CameraComponent>())
 			{
-				m_SelectionContext.AddComponent<CameraComponent>();
-				ImGui::CloseCurrentPopup();
+				if (ImGui::MenuItem("Camera"))
+				{
+					m_SelectionContext.AddComponent<CameraComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 			}
 
-			if (ImGui::MenuItem("Sprite Renderer"))
+			if (!m_SelectionContext.HasComponent<SpriteRendererComponent>())
 			{
-				m_SelectionContext.AddComponent<SpriteRendererComponent>();
-				ImGui::CloseCurrentPopup();
+				if (ImGui::MenuItem("Sprite Renderer"))
+				{
+					m_SelectionContext.AddComponent<SpriteRendererComponent>();
+					ImGui::CloseCurrentPopup();
+				}
 			}
+
+			if (!m_SelectionContext.HasComponent<Rigidbody2DComponent>())
+			{
+				if (ImGui::MenuItem("Rigidbody 2D"))
+				{
+					m_SelectionContext.AddComponent<Rigidbody2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
+			if (!m_SelectionContext.HasComponent<BoxCollider2DComponent>())
+			{
+				if (ImGui::MenuItem("Box Collider 2D"))
+				{
+					m_SelectionContext.AddComponent<BoxCollider2DComponent>();
+					ImGui::CloseCurrentPopup();
+				}
+			}
+
 
 			ImGui::EndPopup();
 		}
@@ -305,29 +341,68 @@ namespace hg {
 			
 			});
 
-		DrawComponent< SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
+			DrawComponent< SpriteRendererComponent>("Sprite Renderer", entity, [](auto& component)
 			{
-				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
-				ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
+					ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
+					ImGui::Button("Texture", ImVec2(100.0f, 0.0f));
 
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					if (ImGui::BeginDragDropTarget())
 					{
-						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
-						component.Texture = Texture2D::Create(texturePath.string());
+						if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+						{
+							const wchar_t* path = (const wchar_t*)payload->Data;
+							std::filesystem::path texturePath = std::filesystem::path(g_AssetPath) / path;
+							Ref<Texture2D> texture = Texture2D::Create(texturePath.string());
+								if (texture->IsLoaded())
+									component.Texture = texture;
+								else
+									HG_WARN("Could not load texture {0}", texturePath.filename().string());
+						}
+						ImGui::EndDragDropTarget();
 					}
-					ImGui::EndDragDropTarget();
-				}
 
-				ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
+					ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.0f);
 			});
 
-		
+				DrawComponent<Rigidbody2DComponent>("Rigidbody 2D", entity, [](auto& component)
+				{
+					const char* bodyTypeStrings[] = { "Static", "Dynamic", "Kinematic" };
+					const char* currentBodyTypeString = bodyTypeStrings[(int)component.Type];
+					if (ImGui::BeginCombo("Body Type", currentBodyTypeString))
+					{
+						for (int i = 0; i < 2; i++)
+						{
+							bool isSelected = currentBodyTypeString == bodyTypeStrings[i];
+							if (ImGui::Selectable(bodyTypeStrings[i], isSelected))
+							{
+								currentBodyTypeString = bodyTypeStrings[i];
+								component.Type = (Rigidbody2DComponent::BodyType)i;
+							}
+
+							if (isSelected)
+								ImGui::SetItemDefaultFocus();
+						}
+
+						ImGui::EndCombo();
+					}
+
+					ImGui::Checkbox("Fixed Rotation", &component.FixedRotation);
+				});
+
+				DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, [](auto& component)
+				{
+						ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
+						ImGui::DragFloat2("Size", glm::value_ptr(component.Offset));
+						ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
+						ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
+						ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
+						ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
+				});
+
 	}
 
-
+		
 }
+
 
 

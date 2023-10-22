@@ -2,7 +2,10 @@
 
 #include "entt.hpp"
 #include "hg/Core/Timestep.h"
+#include "hg/Core/UUID.h"
 #include "hg/Renderer/EditorCamera.h"
+
+class b2World;
 
 namespace hg {
 
@@ -15,11 +18,15 @@ namespace hg {
 		~Scene();
 
 		Entity CreateEntity(const std::string& name = std::string());
+		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
 		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
+
+		void OnRuntimeStart();
+		void OnRuntimeStop();
 		
 		Entity GetPrimaryCameraEntity();
 	private:
@@ -28,6 +35,8 @@ namespace hg {
 	private:
 		entt::registry m_Registry;		// 基本上所有组件和实体的容器  包括了  组件数据  以及  实体ID
 		uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
+
+		b2World* m_PhysicsWorld = nullptr;
 
 		friend class Entity;
 		friend class SceneSerializer;

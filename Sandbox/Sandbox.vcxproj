@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HG_PLATFORM_WINDOWS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\hg\vendor\spdlog\include;..\hg\src;..\hg\src\Hazel;..\hg\vendor\glm;..\hg\vendor\imgui;..\hg\vendor\entt\include;..\hg\vendor\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\hg\vendor\spdlog\include;..\hg\src;..\hg\src\Hazel;..\hg\vendor\glm;..\hg\vendor\imgui;..\hg\vendor\entt\include;..\hg\vendor\yaml-cpp\include;..\hg\vendor\Box2D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -95,7 +95,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HG_PLATFORM_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\hg\vendor\spdlog\include;..\hg\src;..\hg\src\Hazel;..\hg\vendor\glm;..\hg\vendor\imgui;..\hg\vendor\entt\include;..\hg\vendor\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\hg\vendor\spdlog\include;..\hg\src;..\hg\src\Hazel;..\hg\vendor\glm;..\hg\vendor\imgui;..\hg\vendor\entt\include;..\hg\vendor\yaml-cpp\include;..\hg\vendor\Box2D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,7 +115,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>HG_PLATFORM_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\hg\vendor\spdlog\include;..\hg\src;..\hg\src\Hazel;..\hg\vendor\glm;..\hg\vendor\imgui;..\hg\vendor\entt\include;..\hg\vendor\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\hg\vendor\spdlog\include;..\hg\src;..\hg\src\Hazel;..\hg\vendor\glm;..\hg\vendor\imgui;..\hg\vendor\entt\include;..\hg\vendor\yaml-cpp\include;..\hg\vendor\Box2D\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

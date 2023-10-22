@@ -1,15 +1,24 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include "hg/Scene/SceneCamera.h"
-#include "hg/Scene/ScriptableEntity.h"
-#include <glm/gtc/matrix_transform.hpp>
+#include "SceneCamera.h"
+#include "hg/Core/UUID.h"
 #include "hg/Renderer/Texture.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp> // 四元数
 
 namespace hg {
+
+	struct IDComponent
+	{
+		UUID ID;
+
+		IDComponent() = default;
+		IDComponent(const IDComponent&) = default;
+	};
 
 	struct TagComponent
 	{
@@ -44,6 +53,7 @@ namespace hg {
 		
 	};
 
+	// 精灵渲染器组件
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
@@ -67,6 +77,10 @@ namespace hg {
 
 	};
 
+	// Forward declaration
+	class ScriptableEntity;
+
+	// 本机脚本组件
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr;
@@ -82,5 +96,40 @@ namespace hg {
 
 		}
 	};   
+
+	// Physics
+
+	// 刚体2D组件
+	struct Rigidbody2DComponent
+	{
+		enum class BodyType { Static = 0, Dynamic, Kinematic };	// 静态 动态 运动
+		BodyType Type = BodyType::Static;
+		bool FixedRotation = false;							// 固定旋转
+
+		// Storage for runtime
+		void* RuntimeBody = nullptr;
+
+		Rigidbody2DComponent() = default;
+		Rigidbody2DComponent(const Rigidbody2DComponent&) = default;
+	};
+
+	// 盒子2D碰撞组件
+	struct BoxCollider2DComponent
+	{
+		glm::vec2 Offset = { 0.0f, 0.0f };
+		glm::vec2 Size = { 0.5f, 0.5f };
+
+		// TODO(Yan): 将来可能会进入物理材料	
+		float Density = 1.0f;					// 密度
+		float Friction = 0.5f;					// 摩擦
+		float Restitution = 0.0f;				// 恢复
+		float RestitutionThreshold = 0.5f;		// 阈值
+
+		// Storage for runtime  运行时存储
+		void* RuntimeFixture = nullptr;
+
+		BoxCollider2DComponent() = default;
+		BoxCollider2DComponent(const BoxCollider2DComponent&) = default;
+	};
 
 }
