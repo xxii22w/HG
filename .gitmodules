@@ -19,3 +19,6 @@
 [submodule "hg/vendor/ImGuizmo"]
 	path = hg/vendor/ImGuizmo
 	url = https://github.com/TheCherno/ImGuizmo
+[submodule "hg/vendor/Box2D"]
+	path = hg/vendor/Box2D
+	url = https://github.com/TheCherno/box2d
