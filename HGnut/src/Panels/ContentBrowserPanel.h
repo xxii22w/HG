@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include "hg/Renderer/Texture.h"
 
 namespace hg {
 
@@ -12,6 +13,9 @@ namespace hg {
 		void OnImGuiRender();
 	private:
 		std::filesystem::path m_CurrentDirectory;
+
+		Ref<Texture2D> m_DirectoryIcon;
+		Ref<Texture2D> m_FileIcon;
 	};
 
 }

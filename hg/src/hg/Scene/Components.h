@@ -4,6 +4,7 @@
 #include "hg/Scene/SceneCamera.h"
 #include "hg/Scene/ScriptableEntity.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include "hg/Renderer/Texture.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp> // 四元数
@@ -46,6 +47,8 @@ namespace hg {
 	struct SpriteRendererComponent
 	{
 		glm::vec4 Color{ 1.0f, 1.0f, 1.0f, 1.0f };
+		Ref<Texture2D> Texture;
+		float TilingFactor = 1.0f;
 
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
