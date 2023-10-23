@@ -31,6 +31,7 @@ namespace hg {
 #define HG_CORE_INFO(...)	::hg::Log::GetCoreLogger()->info(__VA_ARGS__)
 #define HG_CORE_TRACE(...)	::hg::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define HG_CORE_FATAL(...)	::hg::Log::GetCoreLogger()->fatal(__VA_ARGS__)
+#define HG_CORE_CRITICAL(...) ::hg::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // 客户端日志宏
 #define HG_ERROR(...)		::hg::Log::GetClientLogger()->error(__VA_ARGS__)
