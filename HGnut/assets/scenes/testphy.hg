@@ -42,7 +42,7 @@ Entities:
     TagComponent:
       Tag: Floor
     TransformComponent:
-      Translation: [0.260112911, -4.6754694, 0]
+      Translation: [1.07707119, -2.94388413, 0]
       Rotation: [0, 0, 2.70076036]
       Scale: [6.16163778, 0.23127386, 0.913899958]
     SpriteRendererComponent:
@@ -57,33 +57,36 @@ Entities:
       Friction: 0.5
       Restitution: 0
       RestitutionThreshold: 0.5
-  - Entity: 11444246285532258574
+  - Entity: 7956752769092228360
     TagComponent:
-      Tag: Camera
+      Tag: Circle
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 1
-        PerspectiveFOV: 0.0122173047
-        PerspectiveNear: 0.00999999978
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-      Primary: true
-      FixedAspectRatio: true
+      Translation: [1.86010182, -1.39749479, 0]
+      Rotation: [0, 0, -0.777915239]
+      Scale: [3.20000005, 3.20000005, 3.20000005]
+    Rigidbody2DComponent:
+      BodyType: Dynamic
+      FixedRotation: false
+    CircleRendererComponent:
+      Color: [0.903474927, 0.101161286, 0.101161286, 1]
+      Thickness: 0.0500000007
+      Fade: 0.0890000015
+    CircleCollider2DComponent:
+      Offset: [0, 0]
+      Radius: 1.5
+      Density: 1
+      Friction: 0.529999971
+      Restitution: 0.0500000007
+      RestitutionThreshold: 0.5
   - Entity: 6733742398024811938
     TagComponent:
       Tag: sprite
     TransformComponent:
-      Translation: [-1.43396032, 5.83078957, 0]
-      Rotation: [0, 0, 0.591536999]
+      Translation: [-0.557951629, -0.426198393, 0]
+      Rotation: [0, 0, 10.466712]
       Scale: [0.539627194, 0.709998608, 0.710000038]
     SpriteRendererComponent:
-      Color: [0.779922783, 0.126473978, 0.126473978, 1]
+      Color: [0.0641761571, 0.783081234, 0.791505814, 1]
     Rigidbody2DComponent:
       BodyType: Dynamic
       FixedRotation: false
@@ -94,3 +97,21 @@ Entities:
       Friction: 0.829999983
       Restitution: 0.280000001
       RestitutionThreshold: 0.810000002
+  - Entity: 1342685133436931821
+    TagComponent:
+      Tag: Camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.0137881013
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
