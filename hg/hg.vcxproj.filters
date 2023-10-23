@@ -141,6 +141,9 @@
     <ClInclude Include="src\hg\Core\Timestep.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\hg\Core\UUID.h">
+      <Filter>src\hg\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\hg\Core\Window.h">
       <Filter>src\hg\Core</Filter>
     </ClInclude>
@@ -1071,7 +1074,6 @@
     <ClInclude Include="vendor\imguizmo\ImGuizmo.h">
       <Filter>vendor\imguizmo</Filter>
     </ClInclude>
-    <ClInclude Include="src\hg\Core\UUID.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1117,6 +1119,9 @@
       <Filter>src\hg\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Core\Log.cpp">
+      <Filter>src\hg\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hg\Core\UUID.cpp">
       <Filter>src\hg\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\hg\Core\Window.cpp">
@@ -1188,6 +1193,5 @@
     <ClCompile Include="vendor\imguizmo\ImGuizmo.cpp">
       <Filter>vendor\imguizmo</Filter>
     </ClCompile>
-    <ClCompile Include="src\hg\Core\UUID.cpp" />
   </ItemGroup>
 </Project>
