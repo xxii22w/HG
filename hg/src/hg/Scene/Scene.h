@@ -17,6 +17,8 @@ namespace hg {
 		Scene();
 		~Scene();
 
+		static Ref<Scene> Copy(Ref<Scene> other);
+
 		Entity CreateEntity(const std::string& name = std::string());
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
@@ -27,6 +29,8 @@ namespace hg {
 
 		void OnRuntimeStart();
 		void OnRuntimeStop();
+
+		void DuplicateEntity(Entity entity);
 		
 		Entity GetPrimaryCameraEntity();
 	private:

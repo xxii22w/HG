@@ -5,13 +5,14 @@ bin-int/
 
 # hg files
 *.log
+*.json
 
 # Visual Studio files and folder
 .vs/
-**.sln
-**.vcxproj
-**.vcxproj.filters
-**.vcxproj.user
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
 
 # Directories
 hg/vendor/VulkanSDK
