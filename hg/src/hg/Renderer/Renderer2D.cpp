@@ -77,7 +77,7 @@ namespace hg {
 		LineVertex* LineVertexBufferBase = nullptr;
 		LineVertex* LineVertexBufferPtr = nullptr;
 
-		float LineWidth = 200.0f;
+		float LineWidth = 2.0f;
 
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 = white texture
@@ -235,7 +235,7 @@ namespace hg {
 	{
 		if (s_Data.QuadIndexCount)
 		{
-			size_t dataSize = (uint32_t)(uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
 			s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
 			// Bind textures
@@ -245,30 +245,30 @@ namespace hg {
 			s_Data.QuadShader->bind();
 			RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 			s_Data.Stats.DrawCalls++;
-
-			if (s_Data.CircleIndexCount)
-			{
-				uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
-				s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
-
-				s_Data.CircleShader->bind();
-				RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
-				s_Data.Stats.DrawCalls++;
-			}
-
-			if (s_Data.LineVertexCount)
-			{
-				uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.LineVertexBufferPtr - (uint8_t*)s_Data.LineVertexBufferBase);
-				s_Data.LineVertexBuffer->SetData(s_Data.LineVertexBufferBase, dataSize);
-
-				s_Data.LineShader->bind();
-				RenderCommand::SetLineWidth(s_Data.LineWidth);
-				RenderCommand::DrawLines(s_Data.LineVertexArray, s_Data.LineVertexCount);
-				s_Data.Stats.DrawCalls++;
-			}
 		}
-		
+
+		if (s_Data.CircleIndexCount)
+		{
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
+			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
+
+			s_Data.CircleShader->bind();
+			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
+			s_Data.Stats.DrawCalls++;
+		}
+
+		if (s_Data.LineVertexCount)
+		{
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.LineVertexBufferPtr - (uint8_t*)s_Data.LineVertexBufferBase);
+			s_Data.LineVertexBuffer->SetData(s_Data.LineVertexBufferBase, dataSize);
+
+			s_Data.LineShader->bind();
+			RenderCommand::SetLineWidth(s_Data.LineWidth);
+			RenderCommand::DrawLines(s_Data.LineVertexArray, s_Data.LineVertexCount);
+			s_Data.Stats.DrawCalls++;
+		}
 	}
+
 
 	void Renderer2D::StartNewBatch()
 	{

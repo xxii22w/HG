@@ -29,16 +29,6 @@ namespace hg {
 	}
 
 
-	static void DoMath(const glm::mat4& transform)
-	{
-
-	}
-
-	static void OnTransformConstruct(entt::registry& registry,entt::entity entity)
-	{
-
-	}
-
 	Scene::Scene()																				// 网格组件
 	{
 
@@ -84,7 +74,6 @@ namespace hg {
 
 			auto& component = src.get<Component>(e);
 			dst.emplace_or_replace<Component>(dstEnttID, component);
-
 		}
 	}
 
@@ -94,9 +83,6 @@ namespace hg {
 		if (src.HasComponent<Component>())
 			dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
 	}
-
-
-
 
 	Ref<Scene> Scene::Copy(Ref<Scene> other)
 	{
@@ -173,11 +159,10 @@ namespace hg {
 
 		// Physics
 		{
-			const int32_t velocityIterations = 6;
+			const int32_t velocityIterations = 6;// 这些参数应该移到编辑器
 			const int32_t positionIterations = 2;
 			m_PhysicsWorld->Step(ts, velocityIterations, positionIterations);
 
-			// Retrieve transform from Box2D
 			auto view = m_Registry.view<Rigidbody2DComponent>();
 			for (auto e : view)
 			{
@@ -185,12 +170,16 @@ namespace hg {
 				auto& transform = entity.GetComponent<TransformComponent>();
 				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
+
+				// 获取物理模拟计算后的主体
 				b2Body* body = (b2Body*)rb2d.RuntimeBody;
+				// 将计算后的值赋予实体
 				const auto& position = body->GetPosition();
 				transform.Translation.x = position.x;
 				transform.Translation.y = position.y;
-				transform.Rotation.z = body->GetAngle();
+				transform.Rotation.z = body->GetAngle();// 获取z轴角度
 			}
+
 		}
 
 		// Render 2D
@@ -242,14 +231,15 @@ namespace hg {
 	{
 		Renderer2D::BeginScene(camera);
 
+		// Draw sprites
 		{
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 			for (auto entity : group)
 			{
 				auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
 				Renderer2D::DrawSprite(transform.GetTransform(), sprite, (int)entity);
 			}
-
 		}
 
 		// Draw circles
@@ -258,6 +248,7 @@ namespace hg {
 			for (auto entity : view)
 			{
 				auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
+
 				Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade, (int)entity);
 			}
 		}
@@ -278,61 +269,67 @@ namespace hg {
 			if (!cameraComponent.FixedAspectRatio)
 				cameraComponent.Camera.SetViewportSize(width, height);
 		}
+
 	}
 
 	void Scene::OnRuntimeStart()
 	{
-		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });
-
+		// 1.创建一个物体世界
+		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });// 重力加速度向下
+		// 1.1为当前场景所有具有物理组件的实体创建b2Body
 		auto view = m_Registry.view<Rigidbody2DComponent>();
 		for (auto e : view)
 		{
 			Entity entity = { e, this };
 			auto& transform = entity.GetComponent<TransformComponent>();
 			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
-
+			// 2.1 主体定义用来指定动态类型和参数
 			b2BodyDef bodyDef;
 			bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
 			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
-			bodyDef.angle = transform.Rotation.z;
-
+			bodyDef.angle = transform.Rotation.z;   // 绕着z轴旋转
+			// 2.2 由b2BodyDef创建主体
 			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
-			body->SetFixedRotation(rb2d.FixedRotation);
+			body->SetFixedRotation(rb2d.FixedRotation); // 是否固定旋转
+
 			rb2d.RuntimeBody = body;
 
-			if (entity.HasComponent<BoxCollider2DComponent>())
-			{
+			if (entity.HasComponent<BoxCollider2DComponent>()) {
+
 				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
 
+				// 3.1定义Box包围盒
 				b2PolygonShape boxShape;
-				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
-
+				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);// 包围盒跟随物体的size而变化
+				// 3.2定义fixture，fixture包含定义的包围盒
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &boxShape;
 				fixtureDef.density = bc2d.Density;
 				fixtureDef.friction = bc2d.Friction;
 				fixtureDef.restitution = bc2d.Restitution;
 				fixtureDef.restitutionThreshold = bc2d.RestitutionThreshold;
+				// 3.3定义主体的fixture
 				body->CreateFixture(&fixtureDef);
 			}
 
 			if (entity.HasComponent<CircleCollider2DComponent>())
 			{
 				auto& cc2d = entity.GetComponent<CircleCollider2DComponent>();
-
+				// 3.1定义圆形包围盒
 				b2CircleShape circleShape;
 				circleShape.m_p.Set(cc2d.Offset.x, cc2d.Offset.y);
 				circleShape.m_radius = transform.Scale.x * cc2d.Radius;
 
+				// 3.2定义fixture，fixture包含定义的包围盒
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &circleShape;
 				fixtureDef.density = cc2d.Density;
 				fixtureDef.friction = cc2d.Friction;
 				fixtureDef.restitution = cc2d.Restitution;
 				fixtureDef.restitutionThreshold = cc2d.RestitutionThreshold;
+				// 3.3定义主体的fixture
 				body->CreateFixture(&fixtureDef);
 			}
-
 		}
 	}
 
@@ -373,8 +370,9 @@ namespace hg {
 	template<typename T>
 	void Scene::OnComponentAdded(Entity entity, T& component)
 	{
-		static_assert(false);
+		// static_assert(false);
 	}
+
 	template<>
 	void Scene::OnComponentAdded<IDComponent>(Entity entity, IDComponent& component)
 	{
@@ -393,19 +391,13 @@ namespace hg {
 	}
 
 	template<>
-	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)
-	{
-	}
-
-	template<>
-	void Scene::OnComponentAdded<CircleCollider2DComponent>(Entity entity, CircleCollider2DComponent& component)
-	{
-	}
-
-	template<>
 	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity entity, SpriteRendererComponent& component)
 	{
+	}
 
+	template<>
+	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)
+	{
 	}
 
 	template<>
@@ -425,6 +417,11 @@ namespace hg {
 
 	template<>
 	void Scene::OnComponentAdded<BoxCollider2DComponent>(Entity entity, BoxCollider2DComponent& component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CircleCollider2DComponent>(Entity entity, CircleCollider2DComponent& component)
 	{
 	}
 }

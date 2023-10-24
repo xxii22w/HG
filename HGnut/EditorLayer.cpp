@@ -6,6 +6,7 @@
 #include "hg/Utils/PlatformUtils.h"
 #include "ImGuizmo.h"
 #include "hg/Math/Math.h"
+
 namespace hg {
 
 	extern const std::filesystem::path g_AssetPath;
@@ -13,7 +14,6 @@ namespace hg {
 	EditorLayer::EditorLayer()
 		: Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f), m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
 	{
-
 	}
 
 	void EditorLayer::OnAttach()
@@ -81,15 +81,17 @@ namespace hg {
 		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 #endif
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
+
 	void EditorLayer::OnDetach()
 	{
 		HG_PROFILE_FUNCTION();
 	}
+
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
 		HG_PROFILE_FUNCTION();
+
 		// Resize
 		if (FramebufferSpecification spec = m_Framebuffer->GetSpecification();
 			m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
@@ -114,11 +116,10 @@ namespace hg {
 		{
 			case SceneState::Edit:
 			{
-				if (m_ViewportFocuse)
+				if (m_ViewportFocused)
 					m_CameraController.OnUpdate(ts);
 
 				m_EditorCamera.OnUpdate(ts);
-
 				m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 				break;
 			}
@@ -137,6 +138,7 @@ namespace hg {
 		my = viewportSize.y - my;
 		int mouseX = (int)mx;
 		int mouseY = (int)my;
+
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
 		{
 			int pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
@@ -146,6 +148,7 @@ namespace hg {
 		OnOverlayRender();
 
 		m_Framebuffer->Unbind();
+
 	}
 	void EditorLayer::OnImGuiRender()
 	{
@@ -155,6 +158,7 @@ namespace hg {
 		static bool opt_fullscreen_persistant = true;
 		bool opt_fullscreen = opt_fullscreen_persistant;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+
 		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
 		// because it would be confusing to have two docking targets within each others.
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -169,9 +173,11 @@ namespace hg {
 			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 		}
+
 		// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
 		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
 			window_flags |= ImGuiWindowFlags_NoBackground;
+
 		// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
 		// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive, 
 		// all active windows docked into it will lose their parent and become undocked.
@@ -207,30 +213,38 @@ namespace hg {
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);1
 				if (ImGui::MenuItem("New", "Ctrl+N"))
 					NewScene();
+
 				if (ImGui::MenuItem("Open...", "Ctrl+O"))
 					OpenScene();
+
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
 					SaveSceneAs();
+
 				if (ImGui::MenuItem("Exit")) Application::Get().Close();
 				ImGui::EndMenu();
 			}
+
 			ImGui::EndMenuBar();
 		}
+
 		m_SceneHierarchyPanel.OnImGuiRender();
 		m_ContentBrowserPanel.OnImGuiRender();
 
 		ImGui::Begin("Stats");
+
 		std::string name = "None";
 		if (m_HoveredEntity)
 			name = m_HoveredEntity.GetComponent<TagComponent>().Tag;
-
 		ImGui::Text("Hovered Entity: %s", name.c_str());
+
+
 		auto stats = Renderer2D::GetStatistics();
 		ImGui::Text("Renderer2D Stats:");
 		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
 		ImGui::Text("Quads: %d", stats.QuadCount);
 		ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 		ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+
 		ImGui::End();
 
 		ImGui::Begin("Settings");
@@ -246,12 +260,14 @@ namespace hg {
 
 		m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
 		m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
-		m_ViewportFocuse = ImGui::IsWindowFocused();
-		m_ViewportHovered = ImGui::IsWindowHovered();
 
-		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocuse && !m_ViewportHovered);
+		m_ViewportFocused = ImGui::IsWindowFocused();
+		m_ViewportHovered = ImGui::IsWindowHovered();
+		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
+
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
 		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
@@ -265,7 +281,6 @@ namespace hg {
 			}
 			ImGui::EndDragDropTarget();
 		}
-
 
 		// Gizmos
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
@@ -281,6 +296,7 @@ namespace hg {
 			// const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
 			// const glm::mat4& cameraProjection = camera.GetProjection();
 			// glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+			
 			// Editor camera
 			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
 			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
@@ -296,7 +312,6 @@ namespace hg {
 			// Snap to 45 degrees for rotation
 			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
 				snapValue = 45.0f;
-
 			float snapValues[3] = { snapValue, snapValue, snapValue };
 
 			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
@@ -329,25 +344,30 @@ namespace hg {
 		dispatcher.Dispatch<KeyPressEvent>(HG_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(HG_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 	}
+
 	bool EditorLayer::OnKeyPressed(KeyPressEvent& e)
 	{
 		// Shortcuts
 		if (e.GetRepeatCount() > 0)
 			return false;
+
 		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
 		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+
 		switch (e.GetKeyCode())
 		{
 		case Key::N:
 		{
 			if (control)
 				NewScene();
+
 			break;
 		}
 		case Key::O:
 		{
 			if (control)
 				OpenScene();
+
 			break;
 		}
 		case Key::S:
@@ -415,15 +435,20 @@ namespace hg {
 		if (m_SceneState == SceneState::Play)
 		{
 			Entity camera = m_ActiveScene->GetPrimaryCameraEntity();
+			if (!camera)
+				return;
+			// Caemra类没有视图矩阵，所以需传入transform计算视图矩阵
 			Renderer2D::BeginScene(camera.GetComponent<CameraComponent>().Camera, camera.GetComponent<TransformComponent>().GetTransform());
 		}
 		else
 		{
+			// EditorCamera，可以直接获取投影视图矩阵，所以不需要transform
 			Renderer2D::BeginScene(m_EditorCamera);
 		}
 
 		if (m_ShowPhysicsColliders)
 		{
+			// 包围盒需跟随对应的物体, 包围盒的transform需基于物体的平移、旋转、缩放。
 			// Box Colliders
 			{
 				auto view = m_ActiveScene->GetAllEntitiesWith<TransformComponent, BoxCollider2DComponent>();
@@ -434,6 +459,7 @@ namespace hg {
 					glm::vec3 translation = tc.Translation + glm::vec3(bc2d.Offset, 0.001f);
 					glm::vec3 scale = tc.Scale * glm::vec3(bc2d.Size * 2.0f, 1.0f);
 
+					// 跟随物体的旋转角度而旋转
 					glm::mat4 transform = glm::translate(glm::mat4(1.0f), translation)
 						* glm::rotate(glm::mat4(1.0f), tc.Rotation.z, glm::vec3(0.0f, 0.0f, 1.0f))
 						* glm::scale(glm::mat4(1.0f), scale);
@@ -468,12 +494,13 @@ namespace hg {
 		m_ActiveScene = CreateRef<Scene>();
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+		m_EditorScenePath = std::filesystem::path();
 	}
 
 	void EditorLayer::OpenScene()
 	{
-		if (m_SceneState != SceneState::Edit)
-			OnSceneStop();
+
 		std::string filepath = FileDialogs::OpenFile("hg Scene (*.hg)\0*.hg\0");
 		if (!filepath.empty())
 		{
