@@ -70,12 +70,12 @@ project "hg"
 	    systemversion "latest"
 		defines {"HG_PLATFORM_WINDOWS", "GLFW_INCLUDE_NONE", "HG_ENABLE_ASSERTS"}
 		
-		postbuildcommands
-		{
-		    -- "copy default.config bin\\project.config"
-			-- copy freom relative path to ... 注意这里的COPY前面没有%
-		    ("{COPY} %{cfg.buildtarget.relpath} ../bin/" ..outputdir.."\\Sandbox")
-		}
+		-- postbuildcommands
+		-- {
+		--     -- "copy default.config bin\\project.config"
+		-- 	-- copy freom relative path to ... 注意这里的COPY前面没有%
+		--     ("{COPY} %{cfg.buildtarget.relpath} ../bin/" ..outputdir.."\\Sandbox")
+		-- }
 
     filter { "configurations:Debug" }
         defines { "HG_DEBUG"}
