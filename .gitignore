@@ -2,6 +2,7 @@
 **/bin/
 !vendor/premake/bin/
 bin-int/
+Intermediates/
 
 # hg files
 *.log
@@ -13,6 +14,7 @@ bin-int/
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+**.csproj
 
 # Directories
 hg/vendor/VulkanSDK

@@ -183,7 +183,7 @@ namespace hg {
 				//ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen_persistant);1
 				if (ImGui::MenuItem("New", "Ctrl+N"))
 					NewScene();
-
+				 
 				if (ImGui::MenuItem("Open...", "Ctrl+O"))
 					OpenScene();
 

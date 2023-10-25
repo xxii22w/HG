@@ -57,7 +57,7 @@ project "hg"
 		"%{prj.name}/vendor/yaml-cpp/include",
 		"%{prj.name}/vendor/imguizmo",
 		"%{VULKAN_SDK}/Include",
-		--"%{prj.name}/vendor/Mono/include",
+		"%{prj.name}/vendor/Mono/include",
 		"%{prj.name}/vendor/Box2D/include"
 	}
 	
@@ -83,7 +83,7 @@ project "hg"
 		libdirs
 		{
 			"%{VULKAN_SDK}/Lib",
-			--"%{prj.name}/vendor/Mono/lib/Debug"
+			"%{prj.name}/vendor/Mono/lib/Debug"
 		}
 		
 		links
@@ -91,7 +91,7 @@ project "hg"
 			"spirv-cross-cored.lib",
 			"spirv-cross-glsld.lib",
 			"SPIRV-Toolsd.lib",
-			--"libmono-static-sgen.lib"
+			"libmono-static-sgen.lib"
 		}
 		
         symbols "On"
@@ -104,7 +104,7 @@ project "hg"
 		libdirs
 		{
 			"%{VULKAN_SDK}/Lib",
-			--"%{prj.name}/vendor/Mono/lib/Release"
+			"%{prj.name}/vendor/Mono/lib/Release"
 		}
 		
 		links
@@ -113,7 +113,7 @@ project "hg"
 			"spirv-cross-core.lib",
 			"spirv-cross-glsl.lib",
 			--"SPIRV-Tools.lib",
-			--"libmono-static-sgen.lib"
+			"libmono-static-sgen.lib"
 		}
 		runtime "Release" -- 运行时链接的dll是release类型的
 
@@ -187,7 +187,7 @@ project "HGnut"
 		"hg/vendor/entt/include",
 		"hg/vendor/yaml-cpp/include",
 		"hg/vendor/imguizmo",
-		--"Hazel/vendor/Mono/include",
+		"hg/vendor/Mono/include",
 		"hg/vendor/box2D/include"
 	}
 
@@ -232,16 +232,16 @@ project "HGnut"
 		optimize "On"
 
 
--- project "Hazel-ScriptCore"
--- 	location "%{prj.name}"
--- 	kind "SharedLib"
--- 	language "C#"
--- 	dotnetframework "4.7.2"
+project "HG-ScriptCore"
+	location "%{prj.name}"
+ 	kind "SharedLib"
+	language "C#"
+ 	dotnetframework "4.7.2"
 	
--- 	targetdir ("%{prj.name}/Build")
--- 	objdir ("%{prj.name}/Intermediates")
+ 	targetdir ("%{prj.name}/Build")
+	objdir ("%{prj.name}/Intermediates")
 
--- 	files 
--- 	{
--- 		"%{prj.name}/Scripts/**.cs"
--- 	}
+ 	files 
+ 	{
+ 		"%{prj.name}/Scripts/**.cs"
+ 	}

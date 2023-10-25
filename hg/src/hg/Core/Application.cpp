@@ -4,7 +4,6 @@
 
 #include "hg/Core/Log.h"
 #include "hg/Renderer/Renderer.h"
-
 #include <GLFW/glfw3.h>
 
 namespace hg {
