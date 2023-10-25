@@ -231,17 +231,3 @@ project "HGnut"
 		defines { "HG_DIST"}
 		optimize "On"
 
-
-project "HG-ScriptCore"
-	location "%{prj.name}"
- 	kind "SharedLib"
-	language "C#"
- 	dotnetframework "4.7.2"
-	
- 	targetdir ("%{prj.name}/Build")
-	objdir ("%{prj.name}/Intermediates")
-
- 	files 
- 	{
- 		"%{prj.name}/Scripts/**.cs"
- 	}
