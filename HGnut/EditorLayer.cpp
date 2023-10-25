@@ -33,7 +33,7 @@ namespace hg {
 		m_EditorScene = CreateRef<Scene>();
 		m_ActiveScene = m_EditorScene;
 
-		auto commandLineArgs = Application::Get().GetCommandLineArgs();
+		auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
 		if (commandLineArgs.Count > 1)
 		{
 			auto sceneFilePath = commandLineArgs[1];
@@ -43,46 +43,7 @@ namespace hg {
 
 		m_EditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
-#if 0
-		// Entity
-		auto square = m_ActiveScene->CreateEntity("Green Square");
-		square.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f, 1.0f, 0.0f, 1.0f });
-		auto redSquare = m_ActiveScene->CreateEntity("Red Square");
-		redSquare.AddComponent<SpriteRendererComponent>(glm::vec4{ 1.0f, 0.0f, 0.0f, 1.0f });
-		m_SquareEntity = square;
-		m_CameraEntity = m_ActiveScene->CreateEntity("Camera A");
-		m_CameraEntity.AddComponent<CameraComponent>();
-		m_SecondCamera = m_ActiveScene->CreateEntity("Camera B");
-		auto& cc = m_SecondCamera.AddComponent<CameraComponent>();
-		cc.Primary = false;
-		class CameraController : public ScriptableEntity
-		{
-		public:
-			virtual void OnCreate() override
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				translation.x = rand() % 10 - 5.0f;
-			}
-			virtual void OnDestroy() override
-			{
-			}
-			virtual void OnUpdate(Timestep ts) override
-			{
-				auto& translation = GetComponent<TransformComponent>().Translation;
-				float speed = 5.0f;
-				if (Input::IsKeyPressed(Key::A))
-					translation.x -= speed * ts;
-				if (Input::IsKeyPressed(Key::D))
-					translation.x += speed * ts;
-				if (Input::IsKeyPressed(Key::W))
-					translation.y += speed * ts;
-				if (Input::IsKeyPressed(Key::S))
-					translation.y -= speed * ts;
-			}
-		};
-		m_CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-		m_SecondCamera.AddComponent<NativeScriptComponent>().Bind<CameraController>();
-#endif
+		Renderer2D::SetLineWidth(4.0f);
 	}
 
 	void EditorLayer::OnDetach()
@@ -226,6 +187,9 @@ namespace hg {
 				if (ImGui::MenuItem("Open...", "Ctrl+O"))
 					OpenScene();
 
+				if (ImGui::MenuItem("Save", "Ctrl+S"))
+					SaveScene();
+
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
 					SaveSceneAs();
 
@@ -348,7 +312,10 @@ namespace hg {
 	void EditorLayer::OnEvent(Event& e)
 	{
 		m_CameraController.OnEvent(e);
-		m_EditorCamera.OnEvent(e);
+		if (m_SceneState == SceneState::Edit)
+		{
+			m_EditorCamera.OnEvent(e);
+		}
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<KeyPressEvent>(HG_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(HG_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
@@ -357,7 +324,7 @@ namespace hg {
 	bool EditorLayer::OnKeyPressed(KeyPressEvent& e)
 	{
 		// Shortcuts
-		if (e.GetRepeatCount() > 0)
+		if (e.IsRepeat())
 			return false;
 
 		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
@@ -493,6 +460,13 @@ namespace hg {
 					Renderer2D::DrawCircle(transform, glm::vec4(0, 1, 0, 1), 0.01f);
 				}
 			}
+
+			// Draw selected entity outline 
+			if (Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity())
+			{
+				const TransformComponent& transform = selectedEntity.GetComponent<TransformComponent>();
+				Renderer2D::DrawRect(transform.GetTransform(), glm::vec4(1.0f, 0.5f, 0.0f, 1.0f));
+			}
 		}
 
 		Renderer2D::EndScene();
@@ -610,14 +584,14 @@ namespace hg {
 		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
 	}
 
-	void EditorLayer::OnDuplicateEntity()
+	void EditorLayer::OnDuplicateEntity() 
 	{
-		if (m_SceneState != SceneState::Edit)
+		if (m_SceneState != SceneState::Edit) 
 			return;
 
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 		if (selectedEntity)
-			m_EditorScene->DuplicateEntity(selectedEntity);
+			m_EditorScene->DuplicateEntity(selectedEntity);  
 	}
 
 	void EditorLayer::UI_Toolbar()

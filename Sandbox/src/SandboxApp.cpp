@@ -1,6 +1,6 @@
 #include <hg.h>
 
-#include "imgui/imgui.h"
+#include "imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "Platform/OpenGL/OpenGLShader.h"
 #include "hg/Renderer/Shader.h"
@@ -231,19 +231,26 @@ private:
 class Sandbox :public hg::Application
 {
 public:
-	Sandbox()
+	Sandbox(const hg::ApplicationSpecification& specification)
+		: hg::Application(specification)
 	{
 		//PushLayer(new ExampleLayer());
 		PushLayer(new Sandbox2D());
 
 	}
+
 	~Sandbox()
 	{
 
 	}
 };
 
-hg::Application* hg::CreateApplication()
+hg::Application* hg::CreateApplication(hg::ApplicationCommandLineArgs args)
 {
-	return new Sandbox();
+	ApplicationSpecification spec;
+	spec.Name = "Sandbox";
+	spec.WorkingDirectory = "../HGnut";
+	spec.CommandLineArgs = args;
+
+	return new Sandbox(spec);
 }

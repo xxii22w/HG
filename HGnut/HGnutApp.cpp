@@ -8,20 +8,21 @@ namespace hg {
 	class HGnut: public Application
 	{
 	public:
-		HGnut(ApplicationCommandLineArgs args)
-			: Application("HGnut",args)
+		HGnut(const ApplicationSpecification& spec)
+			: Application(spec)
 		{
 			PushLayer(new EditorLayer());
 		}
 
-		~HGnut()
-		{
-		}
 	};
 
 	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new HGnut(args);
+		ApplicationSpecification spec;
+		spec.Name = "HGnut";
+		spec.CommandLineArgs = args;
+
+		return new HGnut(spec);
 	}
 
 }
